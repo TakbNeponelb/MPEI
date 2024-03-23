@@ -1,0 +1,21 @@
+* C:\Users\zelle\Desktop\МЭИ\2курс\3сем\элтех\лаба8\Lab8.sch
+
+* Schematics Version 9.2
+* Mon Dec 11 21:46:47 2023
+
+
+
+** Analysis setup **
+.tran 20ns 200us
+
+
+* From [PSPICE NETLIST] section of C:\Program Files\Orcad\PSpice\PSpice.ini:
+.lib "nom.lib"
+
+.INC "Lab8.net"
+
+
+.PROBE V(*) I(*) W(*) D(*) NOISE(*) 
+
+
+.END

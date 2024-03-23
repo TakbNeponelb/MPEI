@@ -1,0 +1,111 @@
+#include <stdio.h>
+#include <locale.h>
+#include <conio.h>
+
+using namespace std;
+
+struct TElem {
+	int TInfo;
+	TElem* next=nullptr;
+};
+
+void pushback(TElem *&a, int info) {
+	TElem *temp = new TElem;
+	(*temp).TInfo = info;
+	(*temp).next = a;
+	a = temp;
+}
+
+int GetInfo(TElem a) { return a.TInfo; }
+
+void Dlt1(TElem *&a){
+	TElem *temp = a;
+	a = (*a).next;
+	(*temp).TInfo = NULL;
+	delete temp;
+}
+
+void DltAll(TElem *&a) {
+	while (a != nullptr) { Dlt1(a); }
+}
+
+void TopToTop(TElem *&a, TElem *&b) {
+	TElem *Elem=a;
+	a = (*a).next;
+	(*Elem).next = b;
+	b = Elem;
+}
+
+
+void readthisTXT(TElem *&a, int argc, char* argv[]) {
+	FILE *txt;
+	int Inf;
+	fopen_s(&txt, argv[1], "rt");
+	while (!feof(txt)) {
+		fscanf_s(txt, "%d", &Inf);
+		pushback(a, Inf);
+	}
+}
+
+void readthisBIN(TElem *&a, int argc, char* argv[]) {
+	FILE *txt;
+	int Inf;
+	fopen_s(&txt, argv[2], "rb");
+	while (!feof(txt)) {
+		fscanf_s(txt, "%d", &Inf);
+		pushback(a, Inf);
+	}
+}
+
+void ShowStdOut(TElem *a) {
+	if (a == nullptr) { printf_s("\nПусто!\n"); return; }
+	TElem *temp = nullptr;
+	while (a) {
+		printf_s("%d\n", GetInfo(*a));
+		TopToTop(a, temp);
+	}
+	while (temp) { TopToTop(temp, a); }
+}
+
+void ShowTXT (TElem* a, int argc, char* argv[]) {
+	TElem *temp = nullptr;
+	FILE *txt;
+	fopen_s(&txt, argv[3], "wt");
+	while (a) {
+		fprintf_s(txt, "%d\n", GetInfo(*a));
+		TopToTop(a, temp);
+	}
+	while (temp) { TopToTop(temp, a); }
+}
+
+void ChangeMeFully(TElem *&a) {
+	TElem *temp = nullptr;
+	while (a) {
+		if (GetInfo(*a) == 0) { pushback(temp, 0); }
+		TopToTop(a, temp);
+	}
+	while (temp) { TopToTop(temp, a); }
+}
+
+int main(int argc, char* argv[]) {
+	int ch;
+	setlocale(LC_ALL, "RUS");
+	TElem *a = nullptr;
+	//a->TInfo = NULL;
+	do {
+		printf_s("\n1-Считать из текстового файло\n2-Считать из бинарного файла\n3-Корректировка\n4-Показать на консоли\n5-Показать в текстовом файле\n6-Удалить все!\n0-Выход\nВаш выбор:");
+		scanf_s("%d", &ch);
+		printf_s("\n");
+		switch (ch) {
+		case 1:readthisTXT(a, argc, argv); break;
+		case 2:readthisBIN(a, argc, argv); break;
+		case 3:ChangeMeFully(a); break;
+		case 4:ShowStdOut(a); break;
+		case 5:ShowTXT(a, argc, argv); break;
+		case 6:DltAll(a); break;
+		case 0:return 0;
+		default: printf_s("Нет такой команды\nPress any key\n"); _getch();
+		}
+	} while (ch != 0);
+	return 0;
+}

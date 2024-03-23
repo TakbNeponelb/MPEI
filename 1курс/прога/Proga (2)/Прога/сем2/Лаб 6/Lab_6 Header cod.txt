@@ -1,0 +1,115 @@
+#include "Header.h"
+#include <stdio.h>
+
+
+
+using namespace std;
+
+void ReadArr(double* &Arr, int size, FILE *txt)
+{
+	double *NewArr = new double[size];
+	Arr = NewArr;
+	for (int i = 0; i < size; i++)
+	{
+		fscanf_s(txt, "%lf", &(Arr[i]));
+	}
+}
+
+void ReadMatr(double** &Matr, int size, FILE *txt)
+{
+	double** NewMatr = new double*[size];
+	Matr = NewMatr;
+	for (int i = 0; i < size; i++)
+	{
+		Matr[i] = new double[size];
+	}
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
+			fscanf_s(txt, "%lf", &(Matr[i][j]));
+		}
+	}
+}
+
+double SrMatr(const double* const * const &Matr, int size)
+{
+	double ca = 0;
+	int i = 0;
+	while (i < size)
+	{
+		ca += Matr[i][i];
+		i++;
+	}
+	return (ca /= size);
+}
+
+bool CheckMatr(const double* const * const &Matr, const double* const Arr, int size)
+{
+	double ca = SrMatr(Matr, size);
+	bool fl = true;
+	int i = 0;
+	while ((fl) && (i < size))
+	{
+		if (ca >= Arr[i])
+		{
+			fl = false;
+		}
+		i++;
+	}
+	return fl;
+}
+
+void plusMatr(double** const &Matr, int size, double ca)
+{
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
+			if (Matr[i][j] > 0)
+			{
+				Matr[i][j] += ca;
+			}
+		}
+	}
+}
+
+void minusMatr(double** const &Matr, int size, double ca)
+{
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
+			if (Matr[i][j] < 0)
+			{
+				Matr[i][j] -= ca;
+			}
+		}
+	}
+}
+
+void PrintMatrix(const double* const * const &Matr, int size, FILE *txt)
+{
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
+			fprintf_s(txt ,"%lf ", Matr[i][j]);
+		}
+		fprintf_s(txt, "\n");
+	}
+}
+
+void DeleteArr(double* const &Arr, int size)
+{
+	delete Arr;
+}
+
+void DeleteMatrix(double** const &Matr, int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		delete Matr[i];
+	}
+	delete Matr;
+}

@@ -1,0 +1,36 @@
+\documentclass[a4paper]{article}
+\usepackage[14pt]{extsizes} % для того чтобы задать нестандартный 14-ый размер шрифта
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{setspace,amsmath}
+\usepackage{epigraph} % для эпиграфов и продвинутых цитат
+\usepackage{csquotes} % ещё одна штука для цитат
+\usepackage[unicode, pdftex]{hyperref} % подключаем hyperref (для ссылок внутри  pdf)
+\usepackage{amssymb} % в том числе для красивого знака пустого множества
+\usepackage{amsthm} % в т.ч. для оформления доказательств
+\usepackage[left=20mm, top=15mm, right=15mm, bottom=15mm, nohead, footskip=10mm]{geometry} % настройки полей документа
+ 
+\usepackage[active]{srcltx}
+\newcommand{\ran}{{\rm ran}\,}
+\newcommand{\diag}{{\rm diag}\,}
+% переименовываем  список литературы в "список используемой литературы"
+\addto\captionsrussian{\def\refname{Список используемой литературы}}
+\newcounter{totreferences}
+\pretocmd{\bibitem}{\addtocounter{totreferences}{1}}{}{}
+\newtheorem{theorem}{Теорема} % задаём выводимое слово (для теорем)
+\newtheorem{definition}{Опредление} % задаём выводимое слово (для определений)
+ 
+% объявляем новые команды
+ 
+% новая команда \RNumb для вывода римских цифр
+\newcommand{\RNumb}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
+
+
+
+\begin{document}
+
+\input{Титульник.tex}
+\input{Основная часть.\TeX}
+\newpage
+\tableofcontents
+\end{document}

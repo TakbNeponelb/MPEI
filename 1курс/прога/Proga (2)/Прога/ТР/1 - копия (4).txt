@@ -1,0 +1,8 @@
+#pragma once
+#define file
+#ifdef file //argv[1] - файл для списка, argv[2] - текстовый файл для считывания, argv[3] - текстовый лог-файл.
+#include "FILE.h"
+#else
+#include "Mass.h"
+#endif // file
+

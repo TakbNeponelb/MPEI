@@ -1,0 +1,55 @@
+#include "Header.h"
+
+
+double formula1(double x) {
+	return(pow(1 - (1.0 / 4)*pow(x, 2), 1.0 / 2) + 4 * exp(-x - 1.5) - 2.0 / 3 - x);
+}
+
+double formula2(double x) {
+	return cos(x) + pow(x, 2.0 / 3.0)*exp(-pow(x, 1.0 / 2.0)) - x;
+}
+
+void otrez(double e, double a, double b, int &i, double(*f)(double), double &x) {
+	x = (a + b) / 2;
+	i = 1;
+	while (fabs(f(x)) >= e) {
+		i++;
+		if (f(a)*f(x) < 0) {
+			b = x;
+			x = (a + b) / 2;
+		}
+		else {
+			a = x;
+			x = (a + b) / 2;
+		}
+	}
+}
+
+void seckuch(double e, double a, double b, int &i, double(*f)(double), double &x) {
+	x = a - f(a) / ((f(b) - f(a)) / (b - a));
+	i = 1;
+	while (fabs(f(x)) >= e) {
+		i++;
+		a = b;
+		b = x;
+		x = a - f(a) / ((f(b) - f(a)) / (b - a));
+	}
+}
+
+void printthis(double(*f)(double), int N, double a, double b) {
+	double e, x1, x2;
+	int i1, i2, spacecount;
+	char str = ' ';
+	printf_s("___________________________________________________\n");
+	printf_s("|e            |X            |I  |X            |I  |\n");
+	printf_s("___________________________________________________\n");
+	for (int i = 1; i <= N; i++)
+	{
+		e = pow(0.1, i);
+		otrez(e, a, b, i1, f, x1);
+		seckuch(e, a, b, i2, f, x2);
+		spacecount = 11 - i;
+		printf_s("|%1.*lf%*c|%1.*lf%*c|%3d|%1.*lf%*c|%3d|\n", i, e, spacecount, str, i, x1, spacecount, str, i1, i, x2, spacecount, str, i2);
+		printf_s("___________________________________________________\n");
+	}
+}

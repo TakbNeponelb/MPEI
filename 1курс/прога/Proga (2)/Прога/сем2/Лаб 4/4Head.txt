@@ -1,0 +1,6 @@
+#pragma once
+#include <cmath>
+#include <stdio.h>
+
+void FillArray(double *&x, int size, int mode);
+double formula(double *&x, int a, int b, int size);

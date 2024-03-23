@@ -1,0 +1,33 @@
+#include "Header.h"
+#include <iostream>
+
+using namespace std;
+
+int main() {
+	int N;
+	double a, b;
+	printf_s("Enter N: ");
+	scanf_s("%d", &N);
+	if (N < 1 && N>10) {
+		printf_s("Error! Incorrect N!");
+		return 0;
+	}
+	printf_s("Enter [a,b] C (0,2):\n");
+	scanf_s("%lf%lf", &a, &b);
+	if ((a >= b) || (a > 2) || (a < 0) || (b > 2) || (b < 0)) {
+		printf_s("Error! Incorrect [a,b]!");
+		return 0;
+	}
+	if (formula1(a)*formula1(b) > 0) {
+		printf_s("Error! 0 is absent");
+		return 0;
+	}
+	printf_s("___________________________________________________\n");
+	printf_s("|19           |segment method   |intercept method |\n");
+	printthis(formula1, N, a, b);
+	printf_s("\n\n\n___________________________________________________\n");
+	printf_s("|22           |segment method   |intercept method |\n");
+	printthis(formula2, N, a, b);
+	system("pause");
+	return 0;
+}

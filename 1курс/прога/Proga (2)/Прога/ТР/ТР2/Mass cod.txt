@@ -1,0 +1,214 @@
+#include "Mass.h"
+#ifndef file
+
+bool IsNotEmpty(List a) {
+	return a.n;//Переполнение? Не, не слышали...
+}
+
+void FirstElem(List &a) {
+	int i = 0;
+	while (a.Mass[i].Height < 0) { //пока не найдем значащего элемента
+		i++;
+	}
+	a.n = a.n + a.dop1 - i;			//Кол-во значащих элементов
+	a.dop1 = i;						//Кол-во nulll констант
+	return;
+}
+bool NextElem(List &a) {
+	if (a.Mass[a.dop1 + 1].Height < 0) {									//Если следующий не значащий, то ничего не делать (текущий - последний элемент)
+		//printf("Ошибка, попытка выйти за пределы списка.");
+		return false;
+	}
+	a.dop1++; a.n--;														//Передвинуть к следующему
+	return true;
+}
+bool PreviousElem(List &a) {
+	if (a.Mass[a.dop1 - 1].Height < 0) {									//Если предыдущий незначащий, то ничего не делать (Текущий - первый)
+		//printf("Ошибка, попытка выйти за пределы списка."); 
+		return false;
+	}
+	a.dop1--;																//Передвинуть к предыдущему
+	a.n++;
+	return true;
+}
+void LastElem(List &a) {
+	while (a.Mass[a.dop1 + 1].Height > 0) {		//Пока есть значящие элементы
+		a.dop1++;
+	}
+	a.n = 1;
+}
+
+void LogFile(List a, int argc, char* argv[]) {
+	FILE* log = fopen(argv[3], "r+t");
+	fseek(log, 0, SEEK_END);					//Переходим в конец лог-файла
+	if (IsNotEmpty(a)) {
+		int CurN = a.n, Curdop1 = a.dop1;			//Cохраняем положение текущего элемента
+		FirstElem(a);								//Переходим к 1 элементу для считывания
+		for (int i = a.dop1; i < a.dop1 + a.n; i++)
+		{
+			FPrintTInfo(a.Mass[i], log);
+			fprintf(log, "\n");
+		}
+		a.n = CurN; a.dop1 = Curdop1;				//Возвращаем положение текущего элемента
+	}
+	else {
+		fprintf(log, "Список пуст!");
+	}
+	fprintf(log, "\n");
+	fclose(log);
+	system(argv[3]);							//Открытие лог-файла
+}
+
+void CreateList(List &a, TInfo info, int argc, char* argv[]) {
+	CorrectTInfo(info);
+	if (IsNotEmpty(a)) { delete[] a.Mass; }//если не пуст, то удалить
+	a.Mass = new TInfo[11];
+	a.Mass[0] = info;
+	for (int i = 1; i < 11; i++) { a.Mass[i] = nulll; }
+	a.dop1 = 0;
+	a.n = 1;
+	a.dop2 = 10;
+	return;
+}
+
+void PushBack(List &a, TInfo info, int argc, char* argv[]) {
+	CorrectTInfo(info);
+	int CurN = a.n, Curdop1 = a.dop1;									//Запоминаем текущее положение в массиве
+	FirstElem(a);
+	if (a.dop2--) {														//Если есть запас, то добавляем в него, сдвигая все вперед
+		for (int i = 0; i < a.n; i++)
+		{
+			a.Mass[a.dop1 + a.n - i] = a.Mass[a.dop1 + a.n - 1 - i];
+		}
+		a.Mass[a.dop1] = info;
+		a.n++;
+		return;
+	}
+	TInfo* buff = new TInfo[a.n + 11];									//Создаем новый массив, так как нету запаса, и заносим в него все элементы, включая info
+	for (int i = 1; i < a.n + 1; i++) { buff[i] = a.Mass[a.dop1 + i - 1]; }
+	buff[0] = info;
+	for (int i = a.n + 1; i < a.n + 11; i++) { buff[i] = nulll; }
+	delete[] a.Mass;
+	a.Mass = buff;
+	a.dop1 = a.n - CurN; a.n = ++CurN; a.dop2 = 10;
+	return;
+}
+
+void PopBack(List &a, TInfo info) {
+	CorrectTInfo(info);
+	int CurN = a.n, Curdop1 = a.dop1;
+	if (a.dop2--) { a.Mass[a.dop1 + a.n++] = info; return; }		//Если есть место, то добавляем в него
+	FirstElem(a);
+	TInfo* buff = new TInfo[a.n + 11];								//Иначе создаем новый массив, большего размера с запасом
+	for (int i = 0; i < a.n; i++) { buff[i] = a.Mass[a.dop1 + i]; }
+	buff[a.n] = info;
+	for (int i = a.n + 1; i < a.n + 11; i++) { buff[i] = nulll; }
+	delete[] a.Mass;
+	a.Mass = buff;
+	a.dop1 = a.n - CurN; a.n = ++CurN; a.dop2 = 10;
+	return;
+}
+
+void MedBack(List &a, TInfo info) {
+	CorrectTInfo(info);
+	if (a.n < 2) {
+		//printf("Ошибка");
+		PopBack(a, info);
+		return;
+	}
+	if (a.dop2--) {
+		for (int i = a.dop1 + a.n; i > a.dop1 + 1; i--) {
+			a.Mass[i] = a.Mass[i - 1];
+		}
+		a.Mass[a.dop1 + 1] = info;
+		a.n++;
+		return;
+	}
+	int CurN = a.n, Curdop1 = a.dop1;
+	FirstElem(a);
+	TInfo* temp = new TInfo[a.n + 11];
+	for (int i = 0; i < a.n - CurN + 1; i++) { temp[i] = a.Mass[a.dop1 + i]; }
+	temp[a.n - CurN + 1];
+	for (int i = a.n - CurN + 1; i < a.n; i++) { temp[i + 1] = a.Mass[a.dop1 + i]; }
+	for (int i = 0; i < 10; i++) { temp[a.n + 1 + i] = nulll; }
+	delete[] a.Mass;
+	a.Mass = temp;
+	a.dop1 = a.n - CurN; a.n = ++CurN; a.dop2 = 10;
+}
+
+void DeleteFirst(List &a) {
+	int CurN = a.n, Curdop1 = a.dop1;
+	FirstElem(a);
+	if (!IsNotEmpty(a)) {
+		//printf("Ошибка");
+		return;
+	}
+	if (a.dop1 == 10) {
+		TInfo* temp = new TInfo[a.n + 9];
+		for (int i = 0; i < a.n - 1; i++) { temp[i] = a.Mass[i + a.dop1 + 1]; }
+		for (int i = a.n - 1; i < a.n + 10; i++) { temp[i] = nulll; }
+		delete[] a.Mass;
+		a.Mass = temp;
+		a.dop1 = a.n - (--CurN); a.n = CurN; a.dop2 = 10;
+		return;
+	}
+	a.Mass[a.dop1] = nulll;
+	if (a.n == CurN) { a.n--; a.dop1++; return; }
+	a.dop1 = ++Curdop1; a.n = --CurN;
+	return;
+}
+
+void DeleteLast(List &a) {
+	int CurN = a.n, Curdop1 = a.dop1;
+	FirstElem(a);
+	if (!IsNotEmpty(a)) {
+		//printf("Ошибка");
+		return;
+	}
+	if (a.dop1 == 10) {
+		TInfo* temp = new TInfo[a.n + 9];
+		for (int i = 0; i < a.n - 1; i++) { temp[i] = a.Mass[i + a.dop1]; }
+		for (int i = a.n - 1; i < a.n + 9; i++) { temp[i] = nulll; }
+		delete[] a.Mass;
+		a.Mass = temp;
+		a.dop1 = a.n - CurN; a.n = --CurN; a.dop2 = 10;
+		return;
+	}
+	for (int i = a.dop1 + a.n - 1; i > a.dop1; i--)
+	{
+		a.Mass[i] = a.Mass[i - 1];
+	}
+	a.Mass[a.dop1] = nulll;
+	a.n = --CurN; a.dop1 = ++Curdop1;
+	return;
+}
+
+void DeleteMedium(List &a) {
+	int CurN = a.n, Curdop1 = a.dop1;
+	FirstElem(a);
+	if (a.n < 2) {
+		//printf("Ошибка");
+		return;
+	}
+	if (a.dop1 == 10) {
+		TInfo* temp = new TInfo[a.n + 9];
+		for (int i = 0; i < a.n - CurN + 1; i++) { temp[i] = a.Mass[i + a.dop1]; }
+		for (int i = a.n - CurN + 2; i < a.n; i++) { temp[i - 1] = a.Mass[i + a.dop1]; }
+		for (int i = a.n - 1; i < a.n + 9; i++) { temp[i] = nulll; }
+		delete[] a.Mass;
+		a.Mass = temp;
+		a.dop1 = ++Curdop1; a.n = --CurN; a.dop2 = 10;
+		return;
+	}
+	for (int i = a.n - CurN + 1 + a.dop1; i > a.dop1; i--)
+	{
+		a.Mass[i] = a.Mass[i - 1];
+	}
+	a.Mass[a.dop1] = nulll;
+	a.n = --CurN; a.dop1 = ++Curdop1;
+	return;
+}
+
+TInfo getTInfo(List a) { return a.Mass[a.dop1]; }
+
+#endif // file

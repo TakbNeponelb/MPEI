@@ -1,0 +1,46 @@
+#pragma once
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+//#define tinfo
+using namespace std;
+
+struct TInfo {
+	char FirstName[30];
+	char LastName[30];
+	int Year;
+	int Weight;
+	int Height;
+};
+
+struct List {
+	TInfo* Mass=nullptr;
+	int dop1=0;
+	int n=0;
+	int dop2=0;
+	int Position = 0;
+};
+
+bool IsNotEmpty(List a);
+void CreateList(List &a, TInfo info, int argc, char* argv[]);
+void PushBack(List &a, TInfo info, int argc, char* argv[]);
+void PopBack(List &a, TInfo info);
+void MedBack(List &a, TInfo info);
+void DeleteFirst(List &a);
+void DeleteLast(List &a);
+void DeleteMedium(List &a);
+#ifndef tinfo
+void FirstElem(List &a);
+void NextElem(List &a);
+void PreviousElem(List &a);
+void LastElem(List &a);
+#else
+TINfo FirstElem(List &a);
+TINfo NextElem(List &a);
+TINfo PreviousElem(List &a);
+TInfo LastElem(List &a);
+#endif // tinfo
+void FPrintTInfo(TInfo a, FILE* buff);
+void FScanTInfo(TInfo &a, FILE* txt);
+void ScanTInfo(TInfo &a);
+TInfo getTInfo(List a);

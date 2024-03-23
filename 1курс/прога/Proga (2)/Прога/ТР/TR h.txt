@@ -1,0 +1,5 @@
+#pragma once
+#include "Header1.h"
+
+void deleteAll(ListMass &a);
+void deleteAll(ListFILE &a, int argc, char* argv[]);

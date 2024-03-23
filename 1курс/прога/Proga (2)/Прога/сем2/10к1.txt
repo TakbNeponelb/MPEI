@@ -1,0 +1,74 @@
+#include "Header1.h"
+
+bool check(TElem *a) { if (a == nullptr) { return true; } else { return false; } }
+
+TElem *create(int info) {
+	TElem *a = new TElem;
+	(*a).TInfo = info;
+	(*a).next = nullptr;
+	return a;
+}
+
+void pushback(TElem *&a, int info) {
+	if (check(a)) { a=create(info); }
+	else {
+		TElem *temp = new TElem;
+		(*temp).TInfo = info;
+		(*temp).next = a;
+		a = temp;
+	}
+}
+
+int GetInfo(TElem a) { return a.TInfo; }
+
+void Dlt1(TElem *&a) {
+	TElem *temp = a;
+	a = (*a).next;
+	(*temp).TInfo = NULL;
+	delete temp;
+}
+
+void TopToTop(TElem *&a, TElem *&b) {
+	TElem *Elem = a;
+	a = (*a).next;
+	(*Elem).next = b;
+	b = Elem;
+}
+
+void AddK(PElem &a, double inf) {
+	PElem temp = 0;
+	while (a) { TopToTop(a, temp); }
+	pushback(temp, inf);
+	while (temp) { TopToTop(temp, a); }
+}
+
+void AddM(PElem &a, double inf, int place) {
+	PElem temp = 0;
+	int buff=0;
+	while (a && place > buff) { TopToTop(a, temp); buff++; }
+	pushback(a, inf);
+	while (temp) { TopToTop(temp, a); }
+}
+
+void DltK(PElem &a) {
+	if (check(a)) { printf_s("Error!"); }
+	else {
+		PElem temp = 0;
+		while (a) { TopToTop(a, temp); }
+		Dlt1(temp);
+		while (temp) { TopToTop(temp, a); }
+		delete temp;
+	}
+}
+
+void DltM(PElem &a, int place) {
+	if (check(a)) { printf_s("Error!"); }
+	else {
+		PElem temp = 0;
+		int buff = 0;
+		while (a && place > buff) { TopToTop(a, temp); buff++; }
+		Dlt1(a);
+		while (temp) { TopToTop(temp, a); }
+		delete temp;
+	}
+}

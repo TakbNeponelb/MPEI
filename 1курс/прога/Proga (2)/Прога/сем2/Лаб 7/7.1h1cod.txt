@@ -1,0 +1,36 @@
+#include "Header1.h"
+#include <stdio.h>
+
+using namespace std;
+
+int LenghtStr(char* const &str) {
+	int i = 0;
+	char ch = '0';
+	while (ch != '\n') {
+		ch = str[i];
+		i++;
+	}
+	return i - 1;
+}
+
+void MaxLenghtStrName(int argc, char* argv[], int &A, int &B) {
+	int F = 0, L = 0, buff;
+	Child Ch1;
+	char ch;
+	FILE *bin;
+	fopen_s(&bin, argv[2], "rb");
+	while (!feof(bin)) {
+		fgets(Ch1.LastName, 32, bin);
+		fgets(Ch1.FirstName, 32, bin);
+		fscanf_s(bin, "%d", &Ch1.YearOfBirth);
+		fscanf_s(bin, "%d", &Ch1.Weight);
+		fscanf_s(bin, "%d", &Ch1.Height);
+		fscanf_s(bin, "%c", &ch);
+		buff = LenghtStr(Ch1.FirstName);
+		if (F < buff) { F = buff; }
+		buff = LenghtStr(Ch1.LastName);
+		if (L < buff) { L = buff; }
+	}
+	A = F; B = L;
+	fclose(bin);
+}

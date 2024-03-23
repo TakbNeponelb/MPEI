@@ -1,0 +1,14 @@
+//#pragma  "Header.h"
+#include <stdio.h>
+
+using namespace std;
+
+void ReadArr(double* &Arr, int size, FILE *txt);
+void ReadMatr(double** &Matr, int size, FILE *txt);
+double SrMatr(const double* const * const &Matr, int size);
+bool CheckMatr(const double* const * const &Matr, const double* const Arr, int size);
+void plusMatr(double** const &Matr, int size, double ca);
+void minusMatr(double** const &Matr, int size, double ca);
+void PrintMatrix(const double* const * const &Matr, int size, FILE *txt);
+void DeleteArr(double* const &Arr, int size);
+void DeleteMatrix(double** const &Matr, int size);

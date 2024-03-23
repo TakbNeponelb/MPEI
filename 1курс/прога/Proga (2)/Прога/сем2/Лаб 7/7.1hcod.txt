@@ -1,0 +1,107 @@
+#include "Header.h"
+#include "Header1.h"
+#include <stdio.h>
+
+using namespace std;
+
+int TxtToBin(int argc, char* argv[]) {
+	Child Ch1;
+	int i = 0;
+	char ch;
+	FILE *txt, *bin;
+	fopen_s(&txt, argv[1], "rt");
+	fopen_s(&bin, argv[2], "wb");
+	while (!feof(txt)) {
+		i++;
+		fgets(Ch1.LastName, 32, txt);
+		fgets(Ch1.FirstName, 32, txt);
+		fscanf_s(txt, "%d", &Ch1.YearOfBirth);
+		fscanf_s(txt, "%d", &Ch1.Weight);
+		fscanf_s(txt, "%d", &Ch1.Height);
+		fscanf_s(txt, "%c", &ch);
+		//fwrite(&Ch1, sizeof(Child), 1, bin);
+		fprintf_s(bin, "%s%s%d\n%d\n%d\n", Ch1.LastName, Ch1.FirstName, Ch1.YearOfBirth, Ch1.Weight, Ch1.Height);
+	}
+	fclose(txt);
+	fclose(bin);
+	return i;
+}
+
+void FindCh(int argc, char* argv[], int year, int i) {
+	Child Ch1;
+	FILE *bin;
+	char ch;
+	fopen_s(&bin, argv[2], "rb");
+	int j = 0;
+	while (j<i) {
+		fgets(Ch1.LastName, 32, bin);
+		fgets(Ch1.FirstName, 32, bin);
+		fscanf_s(bin, "%d", &Ch1.YearOfBirth);
+		fscanf_s(bin, "%d", &Ch1.Weight);
+		fscanf_s(bin, "%d", &Ch1.Height);
+		fscanf_s(bin, "%c", &ch);
+		if (((year - Ch1.YearOfBirth) <= 12) && ((year - Ch1.YearOfBirth) >= 10) && (Ch1.Weight <= 45) && (Ch1.Height >= 155)) {
+			printf_s("\n%.*s %.*s подходит под условие!\n", LenghtStr(Ch1.LastName), Ch1.LastName, LenghtStr(Ch1.FirstName), Ch1.FirstName);
+			}
+		j++;
+	}
+	fclose(bin);
+}
+
+void Show(int argc, char* argv[], int a) {
+	Child Ch1;
+	FILE *bin;
+	int i, b, j=0;
+	char str = ' ';
+	char ch;
+	MaxLenghtStrName(argc, argv, i, b);
+	fopen_s(&bin, argv[2], "rb");
+	printf_s("__________________________________________________________________\n");
+	while (j<a) {
+		//fread(&Ch1, sizeof(Child), 1, bin);
+		fgets(Ch1.LastName, 32, bin);
+		fgets(Ch1.FirstName, 32, bin);
+		fscanf_s(bin, "%d", &Ch1.YearOfBirth);
+		fscanf_s(bin, "%d", &Ch1.Weight);
+		fscanf_s(bin, "%d", &Ch1.Height);
+		fscanf_s(bin, "%c", &ch);
+		printf_s("|%.*s%*c|%.*s%*c|%4d|%3d|%3d|\n", LenghtStr(Ch1.LastName), Ch1.LastName, b - LenghtStr(Ch1.LastName)+1, str, LenghtStr(Ch1.FirstName), Ch1.FirstName, i - LenghtStr(Ch1.FirstName)+1, str, Ch1.YearOfBirth, Ch1.Weight, Ch1.Height);
+		printf_s("__________________________________________________________________\n");
+		j++;
+	}
+	fclose(bin);
+}
+
+void CorrectingThisG(int argc, char* argv[], int year, int i) {
+	Child Ch1;
+	char ch;
+	bool fl = false;
+	int buff = 0, j = 0, a,  b;
+	FILE *bin;
+	fopen_s(&bin, argv[2], "r+b");
+	while (j<i) {
+		j++;
+		a = ftell(bin);
+		fgets(Ch1.LastName, 32, bin);
+		fgets(Ch1.FirstName, 32, bin);
+		fscanf_s(bin, "%d", &Ch1.YearOfBirth);
+		fscanf_s(bin, "%d", &Ch1.Weight);
+		fscanf_s(bin, "%d", &Ch1.Height);
+		fscanf_s(bin, "%c", &ch);
+		if ((year - Ch1.YearOfBirth) < 5) { Ch1.YearOfBirth = 5; fl = true; }
+		else if ((year - Ch1.YearOfBirth) > 14) { Ch1.YearOfBirth = 14; fl = true; }
+		if (Ch1.Weight < 0) { Ch1.Weight = 0; fl = true; }
+		else if (Ch1.Weight > 200) { Ch1.Weight = 200; fl = true; }
+		if (Ch1.Height < 0) { Ch1.Height = 0; fl = true; }
+		else if (Ch1.Height > 200) { Ch1.Height = 200; fl = true; }
+		if (fl) {
+			buff++;
+			b = ftell(bin);
+			fseek(bin, a-b, SEEK_CUR);
+			fprintf_s(bin, "%s%s%d\n%d\n%d\n", Ch1.LastName, Ch1.FirstName, Ch1.YearOfBirth, Ch1.Weight, Ch1.Height);
+			fseek(bin, 0, SEEK_CUR);
+		}
+	}
+	printf_s("%d Structs corrected\n", buff);
+	fclose(bin);
+}

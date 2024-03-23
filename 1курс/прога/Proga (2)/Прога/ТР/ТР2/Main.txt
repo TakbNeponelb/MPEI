@@ -1,0 +1,31 @@
+#include "MainHeader.h"
+#include <windows.h>
+using namespace std;
+
+int main(int argc, char* argv[]) {
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+	FILE* log = fopen("Log.txt", "r+t"); fclose(log);
+	List a;
+	int ch;
+	do
+	{
+		printf("1 - очистить список\n2 - добавить элементы из текстового файла\n3 - добавить элементы, на основе данных введенных в интерактивном режиме0\n4 - удалить N элементов списка\n5 - сделать текущим элементом первый/следующий/предыдущий/последний\n6 - фильтр: удалить из списка все элементы, не удовлетворяющие условию поиска,\nи продублировать удовлетворяющие условию\n7 - Почистить лог-файл\n0 - Выход\n");
+		printf("Ваш выбор: ");
+		scanf("%d", &ch);
+		switch (ch)
+		{
+		case 1:DeleteAll(a); LogFile(a, argc, argv); break;
+		case 2:AddTXT(a, argc, argv); LogFile(a, argc, argv); break;
+		case 3:AddConsole(a, argc, argv); LogFile(a, argc, argv); break;
+		case 4:DeleteN(a); LogFile(a, argc, argv); break;
+		case 5:RunTo(a); break;
+		case 6:DeleteThis(a, argc, argv); LogFile(a, argc, argv); break;
+		case 7:CleanLogFile(argc, argv); break;
+		case 0: break;
+		default:printf("Неправильная команда!"); break;
+		}
+		printf("\n");
+	} while (ch != 0);
+	return 0;
+}

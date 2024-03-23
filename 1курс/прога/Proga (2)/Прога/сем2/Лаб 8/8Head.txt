@@ -1,0 +1,9 @@
+#pragma once
+#include <stdio.h>
+#include <math.h>
+
+double formula1(double x);
+double formula2(double x);
+void otrez(double e, double a, double b, int &i, double(*f)(double), double &x);
+void seckuch(double e, double a, double b, int &i, double(*f)(double), double &x);
+void printthis(double(*f)(double), int N, double a, double b);

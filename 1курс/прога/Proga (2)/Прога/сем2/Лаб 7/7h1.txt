@@ -1,0 +1,13 @@
+#pragma once
+
+struct Child
+{
+	char LastName[32];
+	char FirstName[32];
+	int YearOfBirth;
+	int Weight;
+	int Height;
+};
+
+int LenghtStr(char* const &str);
+void MaxLenghtStrName(int argc, char* argv[], int &A, int &B);

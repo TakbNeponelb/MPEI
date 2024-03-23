@@ -1,0 +1,5 @@
+﻿  LAB2_VS.cpp
+C:\Users\zelle\Desktop\МЭИ\2курс\4сем\MISPI\LAB2_VS\LAB2_VS\LAB2_VS.cpp(27,9): warning C4101: d: неиспользованная локальная переменная
+C:\Users\zelle\Desktop\МЭИ\2курс\4сем\MISPI\LAB2_VS\LAB2_VS\LAB2_VS.cpp(128,45): warning C4305: инициализация: усечение из "double" в "float"
+C:\Users\zelle\Desktop\МЭИ\2курс\4сем\MISPI\LAB2_VS\LAB2_VS\LAB2_VS.cpp(107,12): warning C4101: j: неиспользованная локальная переменная
+  LAB2_VS.vcxproj -> C:\Users\zelle\Desktop\МЭИ\2курс\4сем\MISPI\LAB2_VS\Debug\LAB2_VS.exe

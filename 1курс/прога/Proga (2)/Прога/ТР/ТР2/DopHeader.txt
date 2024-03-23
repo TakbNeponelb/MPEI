@@ -1,0 +1,25 @@
+#pragma once
+#define _CRT_SECURE_NO_WARNINGS
+//#define file
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
+//#define MoreFilesMOREMOREMORE
+//#define tinfo
+using namespace std;
+
+struct TInfo {
+	char FirstName[30];
+	char LastName[30];
+	int Year;
+	int Weight;
+	int Height;
+};
+
+const TInfo nulll{ "","",-1,-1,-1 };
+
+void CorrectTInfo(TInfo &a);
+bool Uslov(TInfo a);
+void FPrintTInfo(TInfo a, FILE* buff);
+void FScanTInfo(TInfo &a, FILE* txt);
+void ScanTInfo(TInfo &a);

@@ -1,0 +1,8 @@
+STATUS: PSpice Schematics to Capture translator (9.2. 225)
+STATUS:  
+STATUS: Translator started at Tuesday, March 12, 2024 01:11:07
+STATUS: C:\Program Files\Orcad\Capture\sch2cap -f "C:\Users\zelle\Desktop\MPEI\2курс\4сем\электроника\lab2\ЛР 02 Полупроводниковый диод и его применение\Diodes.lib" -o "C:\Users\zelle\Desktop\MPEI\2курс\4сем\электроника\lab2\ЛР 02 Полупроводниковый диод и его применение\Diodes.olb" -i C:\Program Files\Orcad\PSpice\PSpice.ini
+   INFO: Using existing library 'C:\Program Files\Orcad\Capture\Library\PSpice\modeled.etc'.
+   INFO: Created new library 'C:\Users\zelle\Desktop\MPEI\2курс\4сем\электроника\lab2\ЛР 02 Полупроводниковый диод и его применение\Diodes.olb'.
+STATUS: Translator stopped at Tuesday, March 12, 2024 01:11:18
+STATUS: 0 Error messages, 0 Warning messages

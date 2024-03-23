@@ -1,0 +1,10 @@
+* Schematics Netlist *
+
+
+
+L_L1         $N_0001 $N_0002  31mH  
+C_C1         $N_0003 $N_0001  5.6n  
+R_R1         $N_0002 $N_0004  110  
+V_V1         $N_0003 0  
++PULSE 0 1 0 0 0 20u 200u
+R_R2         $N_0004 0  10k  

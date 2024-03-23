@@ -1,0 +1,68 @@
+#pragma once
+#include <stdio.h>
+#include <locale.h>
+
+using namespace std;
+
+struct TInfo {
+	char LastName[30] = { NULL };
+	char FirstName[30] = { NULL };
+	int YearOfBirth = NULL;
+	int Weight = NULL;
+};
+
+TInfo NULLL;
+
+struct ListFILE {
+	FILE* bin = 0;
+	int NPosition = 0;
+	int CPosition = 0;
+	int KPosition = 0;
+};
+
+struct ListMass
+{
+	TInfo* Mas = nullptr;
+	int NacCount = 0, KonCount = 0, MaxCount = 0, Current = 0;
+};
+
+bool operator != (TInfo a, TInfo b);
+
+bool IsEmpty(ListMass a);
+bool IsEmpty(ListFILE a);
+
+ListMass CreateList(TInfo info);
+ListFILE CreateList(TInfo info, int argc, char* argv[]);
+
+void PushBack(ListMass &a, TInfo info);
+void PushBack(ListFILE &a, TInfo info, int argc, char* argv[]);
+
+void PopBack(ListMass &a, TInfo info);
+void PopBack(ListFILE &a, TInfo info, int argc, char* argv[]);
+
+void MedBack(ListMass &a, TInfo info, int place);
+void MedBack(ListFILE &a, TInfo info, int argc, char* argv[], int place);
+
+void DltNac(ListMass &a);
+void DltNac(ListFILE &a, int argc, char* argv[]);
+
+void DltKon(ListMass &a);
+void DltKon(ListFILE &a, int argc, char* argv[]);
+
+void DltMed(ListMass &a, int place);
+void DltMed(ListFILE &a, int argc, char* argv[], int place);
+
+void TakeNac(ListMass &a);
+void TakeNac(ListFILE &a);
+
+void TakeKon(ListMass &a);
+void TakeKon(ListFILE &a);
+
+void TakeNext(ListMass &a);
+void TakeNext(ListFILE &a);
+
+void TakePred(ListMass &a);
+void TakePred(ListFILE &a);
+
+TInfo GetInfo(ListMass a);
+TInfo GetInfo(ListFILE a, int argc, char* argv[]);

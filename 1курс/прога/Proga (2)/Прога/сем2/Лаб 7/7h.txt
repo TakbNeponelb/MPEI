@@ -1,0 +1,6 @@
+#pragma once
+
+int TxtToBin(int argc, char* argv[]);
+void FindCh(int argc, char* argv[], int year, int i);
+void Show(int argc, char* argv[], int i);
+void CorrectingThisG(int argc, char* argv[], int year, int i);

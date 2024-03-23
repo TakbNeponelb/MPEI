@@ -1,0 +1,63 @@
+#include "Header.h"
+
+void DltAll(PElem &a) {
+	while (a != nullptr) { Dlt1(a); }
+}
+
+void readthisTXT(PElem &a, int argc, char* argv[]) {
+	FILE *txt;
+	int Inf;
+	fopen_s(&txt, argv[1], "rt");
+	while (!feof(txt)) {
+		fscanf_s(txt, "%d", &Inf);
+		pushback(a, Inf);
+	}
+	fclose(txt);
+}
+
+void readthisBIN(PElem &a, int argc, char* argv[]) {
+	FILE *txt;
+	int Inf;
+	fopen_s(&txt, argv[2], "rb");
+	while (!feof(txt)) {
+		fscanf_s(txt, "%d", &Inf);
+		pushback(a, Inf);
+	}
+	fclose(txt);
+}
+
+void ShowStdOut(PElem a) {
+	if (check(a)) { printf_s("\nÏףסעמ!\n"); return; }
+	PElem temp = 0;
+	while (a) {
+		printf_s("%d\n", GetInfo(*a));
+		TopToTop(a, temp);
+	}
+	while (temp) { TopToTop(temp, a); }
+}
+
+void ShowTXT (PElem a, int argc, char* argv[]) {
+	if (check(a)) { printf_s("\nÏףסעמ!\n"); return; }
+	PElem temp = 0;
+	FILE *txt;
+	fopen_s(&txt, argv[3], "wt");
+	while (a) {
+		fprintf_s(txt, "%d\n", GetInfo(*a));
+		TopToTop(a, temp);
+	}
+	while (temp) { TopToTop(temp, a); }
+	fclose(txt);
+}
+
+double ChangeMeFully(PElem &a) {
+	PElem temp = 0;
+	double buff=0, buff1;
+	while (a) {
+		if (GetInfo(*a) == 0) { pushback(temp, 0); }
+		if (GetInfo(*a) > 0) { buff += GetInfo(*a); }
+		TopToTop(a, temp);
+	}
+	while (temp) { TopToTop(temp, a); }
+	buff1= pow(buff, 0.5);
+	return pow(buff, 0.5);
+}

@@ -1,0 +1,25 @@
+#include "Header.h"
+
+using namespace std;
+
+int main(int argc, char* argv[]) {
+	int ch;
+	setlocale(LC_ALL, "RUS");
+	PElem a=0;
+	do {
+		printf_s("\n1-Считать из текстового файло\n2-Считать из бинарного файла\n3-Корректировка и подсчет\n4-Показать на консоли\n5-Показать в текстовом файле\n6-Удалить все!\n0-Выход\nВаш выбор:");
+		scanf_s("%d", &ch);
+		printf_s("\n");
+		switch (ch) {
+		case 1:readthisTXT(a, argc, argv); break;
+		case 2:readthisBIN(a, argc, argv); break;
+		case 3:printf_s("%lf\n", ChangeMeFully(a)); break;
+		case 4:ShowStdOut(a); break;
+		case 5:ShowTXT(a, argc, argv); break;
+		case 6:DltAll(a); break;
+		case 0:return 0;
+		default: printf_s("Нет такой команды\nPress any key\n"); _getch();
+		}
+	} while (ch != 0);
+	return 0;
+}

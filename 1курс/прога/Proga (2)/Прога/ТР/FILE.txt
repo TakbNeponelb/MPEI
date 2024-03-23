@@ -1,0 +1,23 @@
+#pragma once
+#include "DopHeader.h"
+
+
+struct List {
+	FILE* bin;
+	int dop1 = 0;
+	int n = 0;
+};
+bool IsNotEmpty(List a);
+void CreateList(List &a, TInfo info, int argc, char* argv[]);
+void FirstElem(List &a);
+bool NextElem(List &a);
+bool PreviousElem(List &a);
+void LastElem(List &a);
+TInfo getTInfo(List a);
+void PushBack(List &a, TInfo info, int argc, char* argv[]);
+void PopBack(List &a, TInfo info);
+void MedBack(List &a, TInfo info);
+void DeleteFirst(List &a);
+void DeleteLast(List &a);
+void DeleteMedium(List &a);
+void LogFile(List a, int argc, char* argv[]);

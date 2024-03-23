@@ -1,0 +1,228 @@
+#include "Header1.h"
+
+
+bool operator != (TInfo a, TInfo b) {
+	if (a.FirstName == b.FirstName && a.LastName == b.LastName && a.Weight == b.Weight && a.YearOfBirth == b.YearOfBirth) { return false; }
+	return true;
+}
+
+bool IsEmpty(ListMass a) { if ((a.KonCount-a.NacCount+1) == 0) { return true; }return false;}
+
+bool IsEmpty(ListFILE a) { if ((a.KPosition - a.NPosition + 1) == 0) { return true; } return false; }
+
+ListMass CreateList(TInfo info) {
+	ListMass a;
+	a.Mas = new TInfo[120];
+	a.Mas[40] = info;
+	a.NacCount = 60;
+	a.KonCount = 60;
+	a.MaxCount = 120 - a.KonCount - 1;
+	a.Current = NULL;
+	return a;
+}
+
+ListFILE CreateList(TInfo info, int argc, char* argv[]) {
+	ListFILE a;
+	fopen_s(&a.bin, argv[1], "wb");
+	for (int i = 0; i < 20; i++)
+	{
+		fwrite(&NULLL, sizeof(info), 1, a.bin);
+	}
+	fwrite(&info, sizeof(info), 1, a.bin);
+	a.NPosition = 20;
+	return a;
+}
+
+void PushBack(ListMass &a, TInfo info) {
+	if (a.NacCount > 0) {
+		a.Mas[a.NacCount - 1] = info;
+		a.NacCount--;
+	}
+	ListMass temp;
+	temp.Mas = new TInfo[a.KonCount + 2];
+	temp.Mas[0] = info;
+	for (int i = 1; i < a.KonCount + 2; i++) {
+		temp.Mas[i] = a.Mas[i - 1];
+	}
+	temp.NacCount = 0;
+	temp.KonCount = a.KonCount + 1;
+	temp.MaxCount = 0;
+	delete a.Mas;
+	a = temp;
+}
+
+void PushBack(ListFILE &a, TInfo info, int argc, char* argv[]) {
+	fopen_s(&a.bin, argv[1], "rb");
+	if (a.NPosition > 0) {
+		fopen_s(&a.bin, argv[1], "r+b");
+		fseek(a.bin, (a.NPosition - 1) * sizeof(TInfo), SEEK_SET);
+		fwrite(&info, sizeof(info), 1, a.bin);
+		fclose(a.bin);
+		return;
+		a.NPosition--;
+	}
+	FILE* buff;
+	fopen_s(&buff, argv[1], "wb");
+	TInfo temp;
+	fwrite(&info, sizeof(info), 1, buff);
+	for (int i = 0; i < a.KPosition; i++)
+	{
+		fread(&temp, sizeof(info), 1, a.bin);
+		fwrite(&temp, sizeof(info), 1, buff);
+	}
+	a.bin = buff;
+	a.NPosition--;
+	fcloseall();
+}
+
+void PopBack(ListMass &a, TInfo info) {
+	if (a.MaxCount > 0) {
+		a.Mas[a.KonCount + 1] = info;
+		a.KonCount++;
+		a.MaxCount--;
+	}
+	ListMass temp;
+	temp.Mas = new TInfo[a.KonCount + 2];
+	temp.Mas[a.KonCount+1] = info;
+	for (int i = 0; i < a.KonCount+1; i++) {
+		temp.Mas[i] = a.Mas[i];
+	}
+	temp.NacCount = 0;
+	temp.KonCount = a.KonCount + 1;
+	temp.MaxCount = 0;
+	delete a.Mas;
+	a = temp;
+}
+void PopBack(ListFILE &a, TInfo info, int argc, char* argv[]) {
+	fopen_s(&a.bin, argv[1], "r+b");
+	fseek(a.bin, 0, SEEK_END);
+	fwrite(&info, sizeof(info), 1, a.bin);
+	a.KPosition++;
+	fclose(a.bin);
+}
+void MedBack(ListMass &a, TInfo info, int place) {
+	if (a.KonCount - a.NacCount < place) { printf_s("Îøèáêà!"); return; }
+	if (a.MaxCount > 0) {
+		TInfo buff1, buff2;
+		buff1 = a.Mas[a.NacCount + place + 1];
+		a.Mas[a.NacCount + place + 1] = info;
+		for (int i = a.NacCount + place + 2; i <= a.KonCount + 1; i++) {
+			buff2 = a.Mas[i];
+			a.Mas[i] = buff1;
+			buff1 = buff2;
+		}
+		a.KonCount++;
+	}
+	ListMass temp;
+	temp.Mas = new TInfo[a.KonCount + 21];
+	temp.Mas[place + 11] = info;
+	for (int i = 10; i <= place+10; i++) {
+		temp.Mas[i] = a.Mas[i-10];
+	}
+	for (int i = place + 12; i <= a.KonCount + 11; i++) {
+		temp.Mas[i] = a.Mas[i - 11];
+	}
+	temp.NacCount = 10;
+	temp.KonCount = a.KonCount + 11;
+	temp.MaxCount = 10;
+	delete a.Mas;
+	a = temp;
+}
+
+void MedBack(ListFILE &a, TInfo info, int argc, char* argv[], int place) {
+	TInfo buff1, buff2;
+	fopen_s(&a.bin, argv[1], "r+b");
+	fseek(a.bin, (place)*(sizeof(TInfo)), SEEK_SET);
+	fread(&buff1, sizeof(info), 1, a.bin);
+	fseek(a.bin, 0 - (sizeof(TInfo)), SEEK_CUR);
+	fwrite(&info, sizeof(info), 1, a.bin);
+	fseek(a.bin, 0, SEEK_CUR);
+	for (int i = 0; i < a.KPosition - place - 1; i++)
+	{
+		fread(&buff2, sizeof(info), 1, a.bin);
+		fseek(a.bin, 0 - (sizeof(TInfo)), SEEK_CUR);
+		fwrite(&buff1, sizeof(info), 1, a.bin);
+		fseek(a.bin, 0, SEEK_CUR);
+		buff1 = buff2;
+	}
+	a.KPosition++;
+	fclose(a.bin);
+}
+void DltNac(ListMass &a) {
+	a.Mas[a.NacCount] = NULLL;
+	a.NacCount++;
+}
+
+void DltNac(ListFILE &a, int argc, char* argv[]) {
+	fopen_s(&a.bin, argv[1], "r+b");
+	fseek(a.bin, a.NPosition*(sizeof(TInfo)), SEEK_CUR);
+	fwrite(&NULLL, sizeof(TInfo), 1, a.bin);
+	a.NPosition++;
+	fclose(a.bin);
+}
+
+void DltKon(ListMass &a) {
+	a.Mas[a.KonCount] = NULLL;
+	a.KonCount--;
+	a.MaxCount++;
+
+}
+
+void DltKon(ListFILE &a, int argc, char* argv[]) {
+	fopen_s(&a.bin, argv[1], "r+b");
+	fseek(a.bin, a.KPosition*(sizeof(TInfo)), SEEK_CUR);
+	fwrite(&NULLL, sizeof(TInfo), 1, a.bin);
+	a.KPosition--;
+	fclose(a.bin);
+}
+
+
+void DltMed(ListMass &a, int place) {
+	a.Mas[a.NacCount+place + 1] = NULLL;
+	for (int i = a.NacCount + place + 2; i < a.KonCount; i++) {
+		a.Mas[i - 1] = a.Mas[i];
+	}
+	a.Mas[a.KonCount] = NULLL;
+	a.KonCount--;
+}
+
+void DltMed(ListFILE &a, int argc, char* argv[], int place) {
+	TInfo a1;
+	fopen_s(&a.bin, argv[1], "r+b");
+	fseek(a.bin, (a.NPosition+place)*(sizeof(TInfo)), SEEK_CUR);
+	for (int i = 0; i < place+1; i++) {
+		fread(&a1, sizeof(TInfo), 1, a.bin);
+		fwrite(&a1, sizeof(TInfo), 1, a.bin);
+		fseek(a.bin, 0 - 3 * (sizeof(TInfo)), SEEK_CUR);
+	}
+	fseek(a.bin, (a.NPosition++) * (sizeof(TInfo)), SEEK_SET);
+	fwrite(&NULLL, sizeof(TInfo), 1, a.bin);
+	fclose(a.bin);
+}
+
+void TakeNac(ListMass &a) { a.Current = a.NacCount; }
+
+void TakeNac(ListFILE &a) { a.CPosition = a.NPosition; }
+
+void TakeKon(ListMass &a) { a.Current = a.KonCount; }
+
+void TakeKon(ListFILE &a) { a.CPosition = a.KPosition; }
+
+void TakeNext(ListMass &a) { if (a.Current < a.KonCount) { ++a.Current; } else { a.Current = a.KonCount; } }
+
+void TakeNext(ListFILE &a) { if (a.CPosition < a.KPosition) { ++a.CPosition; } else { a.CPosition = a.KPosition; } }
+
+void TakePred(ListMass &a) { if (a.Current > a.NacCount) { --a.Current; } else { a.Current = a.NacCount; } }
+
+void TakePred(ListFILE &a) { if (a.CPosition < a.NPosition) { --a.CPosition; } else { a.CPosition = a.NPosition; } }
+
+TInfo GetInfo(ListMass a) { return a.Mas[a.Current]; }
+
+TInfo GetInfo(ListFILE a, int argc, char* argv[]) {
+	TInfo buff;
+	fopen_s(&a.bin, argv[1], "r+b");
+	fseek(a.bin, (a.CPosition)*(sizeof(TInfo)), SEEK_CUR);
+	fread(&buff, sizeof(TInfo), 1, a.bin);
+	fclose(a.bin);
+	return buff;
+}

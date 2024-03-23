@@ -1,0 +1,22 @@
+#include <stdio.h>
+#include <ctime>
+#include "Header.h"
+
+
+using namespace std;
+
+int main(int argc, char *argv[]) {
+	int size, mode, a, b;
+	srand(time(NULL));
+	printf_s("Enter number of X\t");
+	scanf_s("%d", &size);
+	double *array = new double[size];
+	printf_s("Select array fill mode: 1 - random; 2 - yours values;\nYour choice: ");
+	scanf_s("%d", &mode);
+	FillArray(array, size, mode);
+	printf_s("Enter [a,b]\n");
+	scanf_s("%d%d", &a, &b);
+	printf_s("%lf\n", formula(array, a, b, size));
+	system("pause");
+	return 0;
+}

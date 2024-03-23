@@ -1,0 +1,9 @@
+#pragma once
+#include "Header1.h"
+
+void DltAll(PElem &a);
+void readthisTXT(PElem &a, int argc, char* argv[]);
+void readthisBIN(PElem &a, int argc, char* argv[]);
+void ShowStdOut(PElem a);
+void ShowTXT (PElem a, int argc, char* argv[]);
+double ChangeMeFully(PElem &a);

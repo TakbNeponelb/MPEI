@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <iostream>
+
+using namespace std;
+
+int main(int argc, char* argv[]) {
+	setlocale(LC_ALL, "ru");
+	FILE *txt;
+	int size, num_of_sentence=0, i=0;
+	bool fl=true;
+	unsigned char ch;
+	fopen_s(&txt, argv[1], "rt");
+	printf_s("Укажите длину слова: ");
+	scanf_s("%d", &size);
+	while (!feof(txt)) {
+		ch = getc(txt);
+		if (strchr(", (){}[]:;.!?\n\0", ch) == 0) {
+			num_of_sentence++;
+			i++;
+			do{
+				ch = getc(txt);
+				if (strchr(", (){}[]:;\n", ch) == 0) {
+					i++;
+				}
+				else {
+					if (size < i) fl = false;
+					i = 0;
+				}
+			} while ((strchr(".!?\0", ch) == 0)&& !feof(txt));
+			if (size < i) fl = false;
+			i = 0;
+			if (fl) {
+				printf_s("%d\n", num_of_sentence);
+				fclose(txt);
+				system("pause");
+				return 0;
+			}
+			fl = true;
+		}
+
+	}
+	printf_s("Не найдено!\n");
+	fclose(txt);
+	system("pause");
+}

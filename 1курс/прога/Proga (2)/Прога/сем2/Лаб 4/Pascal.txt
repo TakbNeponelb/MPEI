@@ -1,0 +1,21 @@
+program L4;
+uses modul;
+var
+size, a, b: integer;
+x:arra;
+buff:double;
+begin
+  writeln('Enter number of X');
+  readln(size);
+  SetLength(x,size);
+  if size<0 then
+    writeln('Error incorrct size!')
+  else begin
+    FillArray(x, size);
+    writeln('Enter [a, b]');
+    readln(a);
+    readln(b);
+    buff:=formula(x, a, b, size);
+    writeln(buff);
+  end;
+end.

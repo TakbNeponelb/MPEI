@@ -1,0 +1,262 @@
+#include "FILE.h"	
+#include <time.h>
+
+bool IsNotEmpty(List a) {
+	return a.n;//Переполнение? Не, не слышали...
+}
+
+void CreateList(List &a, TInfo info, int argc, char* argv[]) {
+	CorrectTInfo(info);
+#ifndef MoreFilesMOREMOREMORE
+	a.bin = fopen(argv[1], "w+b");
+#else
+	char name[16] = {};
+	scanf("%s", name);
+	a.bin = freopen(name, "w+b", a.bin);
+#endif // !MoreFilesMOREMOREMORE
+	/*for (int i = 0; i < 10; i++)
+	{
+		fwrite(&nulll, sizeof(TInfo), 1, a.bin);
+	}*/
+	fwrite(&info, sizeof(TInfo), 1, a.bin);
+	a.dop1 = 0;
+	a.n = 1;
+	fseek(a.bin, sizeof(TInfo)*a.dop1, SEEK_SET);
+	return;
+}
+
+void FirstElem(List &a) {
+	fseek(a.bin, sizeof(TInfo)*a.dop1, SEEK_SET);
+	return;
+}
+
+bool NextElem(List &a) {
+	int j = ftell(a.bin);
+	TInfo info;
+	fseek(a.bin, sizeof(TInfo), SEEK_CUR);
+	fread(&info, sizeof(TInfo), 1, a.bin);
+	if (info.Height < 0) {
+		printf("Ошибка, попытка выйти за пределы списка.");
+		fseek(a.bin, j, SEEK_SET);
+		return false;
+	}
+	fseek(a.bin, sizeof(TInfo) + j, SEEK_SET);
+	return true;
+}
+void NextElemT(List &a) { fseek(a.bin, sizeof(TInfo), SEEK_CUR); }
+bool PreviousElem(List &a) {
+	int j = ftell(a.bin);
+	TInfo info;
+	fseek(a.bin, j - sizeof(TInfo), SEEK_SET);
+	fread(&info, sizeof(TInfo), 1, a.bin);
+	if (info.Height < 0) {
+		//printf_s("Ошибка, попытка выйти за пределы списка.");
+		fseek(a.bin, j, SEEK_SET);
+		return false;
+	}
+	fseek(a.bin, j - sizeof(TInfo), SEEK_SET);
+	return true;
+}
+void LastElem(List &a) {
+	fseek(a.bin, sizeof(TInfo)*(a.dop1 + a.n - 1), SEEK_SET);
+	return;
+}
+
+TInfo getTInfo(List a) {
+	int j = ftell(a.bin);
+	TInfo buff;
+	fread(&buff, sizeof(TInfo), 1, a.bin);
+	fseek(a.bin, j, SEEK_SET);
+	return buff;
+}
+
+void PushBack(List &a, TInfo info, int argc, char* argv[]) {
+	int j = ftell(a.bin);
+	CorrectTInfo(info);
+	TInfo temp;
+	FILE * buff;
+	buff = fopen("bbbbb.bin", "wb");
+	fwrite(&info, sizeof(TInfo), 1, buff);
+	fseek(a.bin, a.dop1*sizeof(TInfo), SEEK_SET); 
+	for (int i = 0; i < a.n; i++)
+	{
+		fread(&temp, sizeof(TInfo), 1, a.bin);
+		fwrite(&temp, sizeof(TInfo), 1, buff);
+	}
+	fclose(a.bin);
+	fclose(buff);
+	remove(argv[1]);
+	rename("bbbbb.bin", argv[1]);
+	a.bin = fopen(argv[1], "r+b"); //
+	a.n++;
+	a.dop1 = 0;
+	fseek(a.bin, sizeof(TInfo) * (j/sizeof(TInfo) - a.dop1 + 1), SEEK_SET);
+}
+
+void PopBack(List &a, TInfo info) {
+	int j = ftell(a.bin);
+	CorrectTInfo(info);
+	fseek(a.bin, (a.dop1 + a.n) * sizeof(TInfo), SEEK_SET);
+	fwrite(&info, sizeof(TInfo), 1, a.bin);
+	fseek(a.bin, j, SEEK_SET);
+	a.n++;
+}
+
+void MedBack(List &a, TInfo info) {
+	int j = ftell(a.bin);
+	if ((a.dop1 + a.n - j / sizeof(TInfo)) < 2) { PopBack(a, info); return; }
+	CorrectTInfo(info);
+	TInfo buff1, buff2;
+	fseek(a.bin, sizeof(TInfo), SEEK_CUR);
+	buff1 = getTInfo(a);
+	fwrite(&info, sizeof(TInfo), 1, a.bin);
+	buff2 = getTInfo(a);
+	while (buff1.Height > 0)
+	{
+		fwrite(&buff1, sizeof(TInfo), 1, a.bin);
+		fseek(a.bin, 0, SEEK_CUR);
+		buff1 = buff2;
+		buff2 = getTInfo(a);
+	}
+	a.n++;
+	fseek(a.bin, j, SEEK_SET);
+	return;
+}
+
+void DeleteFirst(List &a) {
+	int j = ftell(a.bin);
+	if (!IsNotEmpty(a)) {
+		//printf("Ошибка");
+		return;
+	}if (a.dop1 == 10) {
+		fseek(a.bin, a.dop1 * sizeof(TInfo), SEEK_SET);
+		fwrite(&nulll, sizeof(TInfo), 1, a.bin);
+		for (int i = 0; i < a.n - 1; i++)
+		{
+			TInfo buff;
+			fseek(a.bin, (a.dop1 + i + 1) * sizeof(TInfo), SEEK_SET);
+			buff = getTInfo(a);
+			fseek(a.bin, i * sizeof(TInfo), SEEK_SET);
+			fwrite(&buff, sizeof(TInfo), 1, a.bin);
+		}
+		a.n--;
+		if ((a.dop1) * sizeof(TInfo) == j) {
+			fseek(a.bin, 0, SEEK_SET);
+			return;
+		}
+		fseek(a.bin, j - a.dop1 * sizeof(TInfo), SEEK_SET);
+		a.dop1 = 0;
+		return;
+	}
+	fseek(a.bin, a.dop1 * sizeof(TInfo), SEEK_SET);
+	fwrite(&nulll, sizeof(TInfo), 1, a.bin);
+	a.n--;
+	if ((a.dop1++) * sizeof(TInfo) == j) {
+		fseek(a.bin, 0, SEEK_CUR);
+		return;
+	}
+	fseek(a.bin, j, SEEK_SET);
+	return;
+}
+
+void DeleteLast(List &a) {
+	int j = ftell(a.bin);
+	if (!IsNotEmpty(a)) {
+		//printf("Ошибка");
+		return;
+	}
+	TInfo buff;
+	if (a.dop1 == 10) {
+		fseek(a.bin, (a.dop1 + a.n - 1) * sizeof(TInfo), SEEK_SET);
+		fwrite(&nulll, sizeof(TInfo), 1, a.bin);
+		for (int i = 0; i < a.n - 1; i++)
+		{
+			fseek(a.bin, (a.dop1 + i) * sizeof(TInfo), SEEK_SET);
+			buff = getTInfo(a);
+			fseek(a.bin, i * sizeof(TInfo), SEEK_SET);
+			fwrite(&buff, sizeof(TInfo), 1, a.bin);
+		}
+		if (((a.dop1) + (--a.n)) * sizeof(TInfo) == j) {
+			fseek(a.bin, j - (a.dop1 + 1) * sizeof(TInfo), SEEK_SET);
+			return;
+		}
+		fseek(a.bin, j - a.dop1 * sizeof(TInfo), SEEK_SET);
+		a.dop1 = 0;
+		return;
+	}
+	for (int i = 2; i < a.n + 1; i++)
+	{
+		fseek(a.bin, (a.dop1 + a.n - i) * sizeof(TInfo), SEEK_SET);
+		fread(&buff, sizeof(TInfo), 1, a.bin);
+		fwrite(&buff, sizeof(TInfo), 1, a.bin);
+	}
+	if (((a.dop1++) + (--a.n)) * sizeof(TInfo) == j) {
+		fseek(a.bin, j - sizeof(TInfo), SEEK_SET);
+		return;
+	}
+	fseek(a.bin, j, SEEK_SET);
+	return;
+}
+
+void DeleteMedium(List &a) {
+	int j = ftell(a.bin), p = j / sizeof(TInfo) - a.dop1 + 1;
+	TInfo buff1, buff2;
+	if (!NextElem(a)) {
+		//printf("Ошибка");
+		return;
+	}
+	if (a.dop1 == 10) {
+		for (int i = 0; i < p; i++)
+		{
+			fseek(a.bin, (a.dop1 + i) * sizeof(TInfo), SEEK_SET);
+			buff1 = getTInfo(a);
+			fseek(a.bin, i * sizeof(TInfo), SEEK_SET);
+			fwrite(&buff1, sizeof(TInfo), 1, a.bin);
+		}
+		for (int i = p; i < a.n - 1; i++) {
+			fseek(a.bin, (a.dop1 + i + 1) * sizeof(TInfo), SEEK_SET);
+			buff1 = getTInfo(a);
+			fseek(a.bin, i * sizeof(TInfo), SEEK_SET);
+			fwrite(&buff1, sizeof(TInfo), 1, a.bin);
+		}
+		a.n--;
+		fseek(a.bin, j - a.dop1 * sizeof(TInfo), SEEK_SET);
+		a.dop1 = 0;
+		return;
+	}
+	fseek(a.bin, a.dop1 * sizeof(TInfo), SEEK_SET);
+	fread(&buff1, sizeof(TInfo), 1, a.bin);
+	for (int i = 0; i < p; i++)
+	{
+		buff2 = getTInfo(a);
+		fwrite(&buff1, sizeof(TInfo), 1, a.bin);
+		fseek(a.bin, 0, SEEK_CUR);
+		buff1 = buff2;
+	}
+	a.dop1++;
+	a.n--;
+	fseek(a.bin, j + sizeof(TInfo), SEEK_SET);
+}
+
+void LogFile(List a, int argc, char* argv[]) {
+	int j = ftell(a.bin);
+	FILE* log;
+	TInfo buff;
+	log = fopen(argv[3], "r+t");
+	fseek(log, 0, SEEK_END);
+	fseek(a.bin, (a.dop1) * sizeof(TInfo), SEEK_SET);
+	for (int i = a.dop1; i < a.dop1 + a.n - 1; i++)
+	{
+		buff = getTInfo(a);
+		FPrintTInfo(buff, log);
+		fprintf(log, "\n");
+		NextElem(a);
+	}
+	buff = getTInfo(a);
+	FPrintTInfo(buff, log);
+	fprintf(log, "\n");
+	fseek(a.bin, j, SEEK_SET);
+	fprintf(log, "\n");
+	fclose(log);
+	system(argv[3]);
+}

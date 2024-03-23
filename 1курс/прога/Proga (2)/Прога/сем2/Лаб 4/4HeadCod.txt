@@ -1,0 +1,24 @@
+#include "Header.h"
+
+void FillArray(double *&x, int size, int mode) {
+	if (mode == 2) {
+		//printf_s("Enter x[1-%d] values:\n", size);
+		for (int i = 0; i < size; i++) {
+			scanf_s("%lf", &x[i]);
+		}
+	}
+	else {
+		for (int i = 0; i < size; i++) {
+			x[i] = (rand() % 201) / (10.0) - 10;
+		}
+	}
+}
+
+double formula(double *&x, int a, int b, int size) {
+	double buff;
+	if (b < a && a < 0 && b >= size) { printf_s("Error! Incorrect [a, b]"); }	
+	if (a == b) {
+		return (x[a] - pow(x[a], 2) / (2.0 + a));
+	}
+	return formula(x, a, (b + a) / 2, size)*formula(x, ((b + a) / 2) + 1, b, size);
+}

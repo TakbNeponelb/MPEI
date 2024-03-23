@@ -1,0 +1,465 @@
+\newpage
+
+\section{Расчет установившихся режимов линейной электрической цепи при постоянных воздействиях}
+
+
+При постоянном токе конденсатор создает разрыв, катушка индуктивности закорочена, источник тока и источник напряжения имеют только компоненты $J_0, E_0$ соответственно, поэтому возможно перерисовать цепь следующим образом:
+
+\begin{figure}[h]
+    \centering
+    \begin{circuitikz}[scale = 0.85]
+    \ctikzset{inductors/scale=1.5, inductor=american}
+        \draw (0, 0) -- ++(0,1) to[short, *-*] ++(0,2) --  ++(0,1) to[R, l=$R_1$, european] ++(0,4) to[american current source, l=$E_0$, -*] ++(4,0) coordinate(A);
+        \draw (A) to[short, -*] ++(0,-1.5);
+        \draw (4,4) to[R, l=$R_3$, european, -*] ++(0,-4) coordinate(C) -- ++(-4,0);
+        \draw (4,4) to[short, -*] ++(0,1.5);
+        \draw (A) -- ++(4,0) coordinate(D);
+        \draw (D) -- ++(4,0) to[R, european, l=$R_6$, -*] ++(0,-4) coordinate(E);
+        \draw (D) to[R, *-*, european, l=$R_5$] ++(0,-4) coordinate(F) to[R, european, -*, l=$R_2$] ++(0,-4);
+        \draw (4,4) to[R, european, l=$R_H$] (F) -- (E);
+        \draw (C) -- ++(8,0) to[esource, l=$J_0$, name = I] (E);
+        \node at (I)[rotate=90]{> >};
+        
+    \end{circuitikz}
+    \caption{Электрическая цепь}
+    \label{fig:dc_circuit}
+\end{figure}
+
+\subsection{Нахождение потенциалов и токов методом узловых потенциалов}
+
+Расставим потенциалы, случайным образом укажем направления токов в ветвях:
+
+\begin{figure}[h]
+    \centering
+    \begin{circuitikz}[scale = 0.85]
+    \ctikzset{inductors/scale=1.5, inductor=american}
+        \draw (0, 0) -- ++(0,4) to[R, l=$R_1$, european] ++(0,4) to[american current source, l=$E_0$, i=$I_1$] ++(4,0) coordinate(A);
+        \draw (4,4) to[R, l=$R_3$, european, -*, i=$I_3$] ++(0,-4) coordinate(C) -- ++(-4,0);
+        \draw (A) -- ++(4,0) coordinate(D);
+        \draw (D) -- ++(4,0) to[R, european, l=$R_6$, -*, i=$I_6$] ++(0,-4) coordinate(E);
+        \draw (D) to[R, *-*, european, l=$R_5$, i=$I_5$] ++(0,-4) coordinate(F) to[R, european, -*, l=$R_2$, i=$I_2$] ++(0,-4) coordinate(H);
+        \draw (4,4) to[R, european, l=$R_H$] (F) -- (E);
+        \draw (C) -- ++(8,0) coordinate(G);
+        \draw (E) to[esource, l=$J_0$, name = I, i=$J$] (G);
+        \node at (I)[rotate=90]{> >};
+        \node at (D)[yshift = 3mm]{$\varphi_1$};
+        \node at (F)[yshift = -3mm, xshift = 3mm]{$\varphi_2$};
+        \node at (H)[yshift = -3mm]{$\varphi_0=0~B$};
+        
+        
+    \end{circuitikz}
+    \caption{Электрическая цепь}
+    \label{fig:dc_potencial_circuit}
+\end{figure}
+
+Определим потенциалы узлов и узловые токи в ветвях с помощью метода узловых потенциалов, при условии, что $\varphi_0 = 0~B$:
+
+Рассчитаем проводимости каждой ветви:
+\\
+$G_1 = \frac{1}{R_1} = \frac{1}{179} = 5.59$ мСм
+\\
+$G_2 = \frac{1}{R_2} = \frac{1}{250} = 4$ мСм
+\\
+$G_3 = \frac{1}{R_3 + R_H} = \frac{1}{229 + 235} = 2.16$ мСм
+\\
+$G_5 = \frac{1}{R_5} = \frac{1}{212} = 4.72$ мСм
+\\
+$G_6 = \frac{1}{R_6} = \frac{1}{212} = 4.72$ мСм
+\\
+$G_J = 0$ См
+\\
+
+Рассчитаем собственные и взаимные проводимости:
+\\
+$G_{11} = G_1 + G_5 + G_6 = 5.59 + 4.72 + 4.72 = 15.03$ мСм
+\\
+$G_{22} = G_2 + G_3 + G_5 + G_6 = 4 + 2.16 + 4.72 + 4.72 = 15.6$ мСм
+\\
+$G_{12} = G_{21} = G_5 + G_6 = 4.72 + 4.72 = 9.44$ мСм
+\\
+
+Узловые токи:
+\\
+$J^y_1 = \frac{E_0}{R_1} = \frac{10.3}{179} = 57.5$ мА
+\\
+$J^y_2 = J = J_0 = 140$ мА
+\\
+
+Запишем уравнения:
+\\
+$
+\begin{cases}
+\varphi_1G_{11} - \varphi_2G_{12} = J^y_1
+\\
+-\varphi_1G_{21} + \varphi_2G_{22} = J^y_2
+\end{cases}
+$
+\\
+
+Подставим значения:
+\\
+$
+\begin{cases}
+15.03\varphi_1 - 9.44\varphi_2 = 57.5
+\\
+-9.44\varphi_1 + 15.6\varphi_2 = 140
+\end{cases}
+$
+\\
+
+Составим Матричное уравнение:
+\\
+\\
+$
+\begin{pmatrix}
+    15.03 & -9.44\\
+    -9.44 & 15.6 
+\end{pmatrix}
+\cdot
+\begin{pmatrix}
+    \varphi_1 \\
+    \varphi_2
+\end{pmatrix}
+=
+\begin{pmatrix}
+    57.5 \\
+    140
+\end{pmatrix}
+$
+\\
+
+Решив матрицу, получаем ответ:
+\\
+$\begin{cases}
+\varphi_1 = 15.26~B
+\\
+\varphi_2 = 18.21~B
+\end{cases}$
+\\
+
+Рассчитаем узловые токи:
+\\
+$\begin{cases}
+I_1 = (\varphi_0 - \varphi_1 + E_0) \cdot G_1 = (0 - 15.26 + 10.3) \cdot 5.59 = -27.73 ~\text{мА}
+\\
+I_2 = (\varphi_2 - \varphi_0) \cdot G_2 = (18.21 - 0 ) \cdot 4 = 72.84 ~\text{мА}
+\\
+I_3 = (\varphi_2 - \varphi_0) \cdot G_3 = (18.21 - 0 ) \cdot 2.16 = 39.33 ~\text{мА}
+\\
+I_5 = (\varphi_1 - \varphi_2) \cdot G_5 = (15.26 - 18.21) \cdot 4.72 = -13.92 ~\text{мА}
+\\
+I_6 = (\varphi_1 - \varphi_2) \cdot G_6 = (15.26 - 18.21) \cdot 4.72 = -13.92 ~\text{мА}
+\end{cases}$
+
+Знак минус перед токами $I_1$, $I_5$ и $I_6$ обозначает, что истинное направление токов противоположно.
+
+\newpage
+\subsection{Расчет параметров двухполюсника $(U_p, R_{BX}, I_{\text{кз}})$ относительно сопротивления $R_H$}
+
+Перерисуем схему относительно $R_H$ для нахождения эквивалентного сопротивления и напряжения:
+
+\begin{figure}[h]
+    \centering
+    \begin{circuitikz}[scale = 0.85]
+    \ctikzset{inductors/scale=1.5, inductor=american}
+        \draw (0, 0) -- ++(0,4) to[R, l=$R_1$, european] ++(0,4) to[american current source, l=$E_0$] ++(4,0) coordinate(A);
+        \draw (4,4) to[R, l=$R_3$, european, -*] ++(0,-4) coordinate(C) -- ++(-4,0);
+        \draw (A) -- ++(4,0) coordinate(D);
+        \draw (D) -- ++(4,0) to[R, european, l=$R_6$, -*] ++(0,-4) coordinate(E);
+        \draw (D) to[R, *-*, european, l=$R_5$] ++(0,-4) coordinate(F) to[R, european, -*, l=$R_2$] ++(0,-4) coordinate(H);
+        
+        \draw (4,4) to[short, -*] (5.5,4) ;
+        \draw (6.5,4) to[short, *-](F) -- (E);
+        \node at (6,4)[yshift = 3mm]{$R_{BX}$};
+        \draw (C) -- ++(8,0) coordinate(G);
+        \draw (E) to[esource, l=$J_0$, name = I] (G);
+        \node at (I)[rotate=90]{> >};
+        
+    \end{circuitikz}
+    \caption{Электрическая цепь}
+    \label{fig:dc_equ_circuit}
+\end{figure}
+
+Закоротим источник напряжения и разорвем цепь на месте источника тока:
+
+\begin{figure}[h]
+    \centering
+    \begin{circuitikz}[scale = 0.85]
+    \ctikzset{inductors/scale=1.5, inductor=american}
+        \draw (0, 0) -- ++(0,4) to[R, l=$R_1$, european] ++(0,4) -- ++(4,0) coordinate(A);
+        \draw (4,4) to[R, l=$R_3$, european, -*] ++(0,-4) coordinate(C) -- ++(-4,0);
+        \draw (A) -- ++(4,0) coordinate(D);
+        \draw (D) -- ++(4,0) to[R, european, l=$R_6$, -*] ++(0,-4) coordinate(E);
+        \draw (D) to[R, *-*, european, l=$R_5$] ++(0,-4) coordinate(F) to[R, european, -*, l=$R_2$] ++(0,-4) coordinate(H);
+        
+        \draw (4,4) to[short, -*] (5.5,4) ;
+        \draw (6.5,4) to[short, *-](F) -- (E);
+        \node at (6,4)[yshift = 3mm]{$R_{BX}$};
+        \draw (C) -- ++(4,0) coordinate(G);
+        
+    \end{circuitikz}
+    \caption{Электрическая цепь}
+    \label{fig:dc_equ_circuit}
+\end{figure}
+
+\newpage
+Перерисуем схему для более удобного вычисления $R_{BX}$:
+
+\begin{figure}[h]
+    \centering
+    \begin{circuitikz}[scale = 0.85]
+        
+        \draw (0,0) to[R, l=$R_3$, european, *-] ++(4,0) coordinate(C);
+
+        \draw (C) -| ++(0,2) to[R, l=$R_1$, european] ++(4,0)coordinate(A);
+        \draw (C) -| ++(0,-2) to[R, l=$R_2$, european] ++(9,0) -- ++(0,2) to[short, -*] ++(2,0);
+        \draw (A) -| ++(0,1) to[R, l=$R_5$, european] ++(4,0) |- ++(1,-1) -- ++(0,-2);
+        \draw (A) -| ++(0,-1) to[R, l=$R_6$, european] ++(4,0) |- ++(0,1);
+        
+    \end{circuitikz}
+    \caption{Общее сопротивление}
+    \label{fig:dc_res_circuit}
+\end{figure}
+
+Рассчитаем общее сопротивление $R_\text{вх}$:
+\\
+$R_\text{вх} = R_3 + R_{1256} = 229 + 133.18 = 362.18$ Ом
+\\
+$R_{1256} = \frac{R_{156}\cdot R_2}{R_2 + R_{156}} = \frac{285 \cdot 250}{285 + 250} = 133.18$ Ом
+\\
+$R_{156} = R_1 + R_{56} = 179 + 106 = 285$ Ом
+\\
+$R_{56} = \frac{R_5 \cdot R_6}{R_5 + R_6} = \frac{212 \cdot 212}{212 + 212} = 106$ Ом
+\\
+
+Определим $U_p$ с помощью метода суперпозиции:
+
+\begin{figure}[h]
+    \centering
+    \begin{circuitikz}[scale = 0.8]
+    \ctikzset{inductors/scale=1.5, inductor=american}
+        \draw (0, 0) -- ++(0,4) to[R, l=$R_1$, european] ++(0,4) to[american current source, l=$E_0$] ++(4,0) coordinate(A);
+        \draw (4,4) to[R, l=$R_3$, european, -*] ++(0,-4) coordinate(C) -- ++(-4,0);
+        \draw (A) -- ++(4,0) coordinate(D);
+        \draw (D) -- ++(4,0) to[R, european, l=$R_6$, -*] ++(0,-4) coordinate(E);
+        \draw (D) to[R, *-*, european, l=$R_5$] ++(0,-4) coordinate(F) to[R, european, -*, l=$R_2$] ++(0,-4) coordinate(H);
+        
+        \draw (4,4) to[short, -*] (5.5,4) ;
+        \draw (6.5,4) to[short, *-](F) -- (E);
+        \ctikzset{voltage=straight}
+        \draw (7,4) to[short, v=$U_p$] (5,4);
+        \draw[white] (5.6,4) to[short] (6.4,4);
+        \draw (C) -- ++(8,0) coordinate(G);
+        \draw (E) to[esource, l=$J_0$, name = I] (G);
+        \node at (I)[rotate=90]{> >};
+        
+    \end{circuitikz}
+    \caption{Электрическая цепь}
+    \label{fig:dc_equ_circuit}
+\end{figure}
+
+Для расчета эквивалентного напряжения $U_p$ методом суперпозиции,
+отметим в цепи частичные токи и заменим сначала источник тока $J_0$ на разрыв цепи.
+
+\newpage
+\begin{figure}[h]
+    \centering
+    \begin{circuitikz}[scale = 0.8]
+    \ctikzset{inductors/scale=1.5, inductor=american}
+        \draw (0, 0) -- ++(0,4) to[R, l=$R_1$, i=$I^1_1$, european] ++(0,4) to[american current source, l=$E_0$] ++(4,0) coordinate(A);
+        \draw (4,4) to[R, l=$R_3$,i=${I^1_3 = I^1_p}$, european, -*] ++(0,-4) coordinate(C) -- ++(-4,0);
+        \draw (A) -- ++(4,0) coordinate(D);
+        \draw (D) -- ++(4,0) to[R, european, l=$R_6$,i=$I^1_6$, -*] ++(0,-4) coordinate(E);
+        \draw (D) to[R, *-*, european, l=$R_5$, i=$I^1_5$] ++(0,-4) coordinate(F) to[R, european, -*, l=$R_2$, i=$I^1_2$] ++(0,-4) coordinate(H);
+        \draw (4,4) to[short, -*] (5.5,4) ;
+        \draw (6.5,4) to[short, *-](F) -- (E);
+        \ctikzset{voltage=straight}
+        \draw (7,4) to[short, v=$U^1_p$] (5,4);
+        \draw[white] (5.6,4) to[short] (6.4,4);
+        \draw (C) -- ++(8,0) coordinate(G);
+        \draw (G) to[short, -*] ++(0,1.5);
+        \draw (E) to[short, -*] ++(0,-1.5);
+        
+    \end{circuitikz}
+    \caption{Электрическая цепь}
+    \label{fig:dc_equ_circuit}
+\end{figure}
+
+Вместе с $U_p$ последовательно подключен $R_3$, так как в этом месте разрыв цепи, то в расчетах частичных токов оно учитываться не будет.
+
+Свернем $R_5$ и $R_6$ в один резистор $R_{56}$, чтобы получить схему из одной ветви и рассчитать силу тока через закон Ома, причем $I^1_1 = I^1_2 = I^1_{56} = I^1$.
+\\ \\
+$R_{56} = \frac{R_5 \cdot R_6}{R_5 + R_6} = \frac{212 \cdot 212}{212 + 212} = 106 ~\text{Ом}$
+\\
+
+\begin{figure}[h]
+    \centering
+    \begin{circuitikz}[scale = 0.6]
+    \ctikzset{inductors/scale=1.5, inductor=american}
+        \draw (0, 0) -- ++(0,4) to[R, l=$R_1$, i=$I^1_1$, european] ++(0,4) to[american current source, l=$E_0$] ++(4,0) coordinate(A);
+        %\draw (4,4) to[R, l=$R_3$,i=$I^1_3$, european, -*] ++(0,-4) coordinate(C) -- ++(-4,0);
+        \draw (A) -- ++(4,0) coordinate(D);
+        %\draw (D) -- ++(4,0) to[R, european, l=$R_6$,i=$I^1_6$] ++(0,-4) coordinate(E);
+        \draw (D) to[R, european, l=$R_{56}$, i=$I^1_{56}$] ++(0,-4) coordinate(F) to[R, european, l=$R_2$, i=$I^1_2$] ++(0,-4) coordinate(H);
+        \draw (0,0) -- ++(8,0);
+        %\draw (4,4) to[short, -*] (5.5,4) ;
+        %\draw (6.5,4) to[short, *-](F);
+        %\ctikzset{voltage=straight}
+        %\draw (7,4) to[short, v=$U^1_p$] (5,4);
+        %\draw[white] (5.6,4) to[short] (6.4,4);
+        %\draw (C) -- ++(4,0) coordinate(G);
+        
+    \end{circuitikz}
+    \caption{Электрическая цепь}
+    \label{fig:dc_equ_circuit}
+\end{figure}
+
+
+$I' = \frac{E_0}{R_1 + R_2 + R_{56}} = \frac{10.3}{179 + 250 + 106} = 19.25 ~\text{мА}$\\
+
+\newpage
+
+Изменим схему, подключив источник тока и закоротив источник напряжения:
+
+\begin{figure}[h]
+    \centering
+    \begin{circuitikz}[scale = 0.6]
+    \ctikzset{inductors/scale=1.5, inductor=american}
+        \draw (0, 0) -- ++(0,4) to[R, l=$R_1$, european] ++(0,4) -- ++(4,0) coordinate(A);
+        %\draw (4,4) to[R, l=$R_3$, european, -*] ++(0,-4) coordinate(C) -- ++(-4,0);
+        \draw (0,0) -- (4,0) coordinate(C);
+        \draw (A) -- ++(4,0) coordinate(D);
+        \draw (D) -- ++(4,0) to[R, european, l=$R_6$, -*] ++(0,-4) coordinate(E);
+        \draw (D) to[R, *-*, european, l=$R_5$] ++(0,-4) coordinate(F) to[R, european, -*, l=$R_2$] ++(0,-4) coordinate(H);
+        \draw (F) -- (E);
+        %\draw (4,4) to[short, -*] (5.5,4) ;
+        %\draw (6.5,4) to[short, *-](F) -- (E);
+        %\ctikzset{voltage=straight}
+        %\draw (7,4) to[short, v=$U_p$] (5,4);
+        %\draw[white] (5.6,4) to[short] (6.4,4);
+        \draw (C) -- ++(8,0) coordinate(G);
+        \draw (E) to[esource, l=$J_0$, name = I] (G);
+        \node at (I)[rotate=90]{> >};
+        
+    \end{circuitikz}
+    \caption{Электрическая цепь}
+    \label{fig:dc_equ_circuit}
+\end{figure}
+
+Сделаем замену источника тока $J_0$ и резистора $R_2$ на эквивалентный источник напряжения $E_2$ и резистор $R_2$.
+\\
+$E_2 = J_0 \cdot R_2 = 0.140 \cdot 250 = 35 B$
+
+Преобразовав $R_5$ и $R_6$ в один резистор $R_{56}$, снова получим цепь, состоящую из одной ветви. Направим ток против часовой стрелки, сонаправлено с источником тока, и получим следующую схему:
+
+\begin{figure}[h]
+    \centering
+    \begin{circuitikz}[scale = 0.6]
+        \draw (0, 0) -- ++(0,4) to[R, l=$R_1$, european] ++(0,4) -- ++(4,0) coordinate(A);
+        \draw (0,0) -- (4,0) coordinate(C);
+        \draw (8,8) coordinate(D) to[short, i=$I''$] (A) ;
+        \draw (D) to[R, european, l=$R_{56}$] ++(0,-4) coordinate(F) to[american current source,invert, l=$E_2$]++(0,-4) coordinate(H);
+        \draw (C) to[R, l=$R_2$, european] ++(4,0) coordinate(G);
+        
+    \end{circuitikz}
+    \caption{Электрическая цепь}
+    \label{fig:dc_equ_circuit}
+\end{figure}
+
+По закону Ома:
+\\
+$I'' = \frac{E_2}{R_1 + R_2 + R_{56}} = \frac{35}{179 + 250 + 106} = 65.42 ~\text{мА}$
+\\
+
+Так как токи текут в разные стороны, то вычитая из большего меньший, получаем общий ток, направленный против источника напряжения и сонаправленный с источником тока:
+\\
+$I = I'' - I' = 65.42 - 19.25 = 46.17~\text{мА}$
+
+\newpage
+
+Возвращаясь к исходной схеме, расставим потенциалы и посчитаем напряжение между ними:
+
+\begin{figure}[h]
+    \centering
+    \begin{circuitikz}[scale = 0.7]
+    \ctikzset{inductors/scale=1.5, inductor=american}
+        \draw (0, 0) -- ++(0,4) to[R, l=$R_1$, european] ++(0,4) to[american current source, l=$E_0$] ++(4,0) coordinate(A);
+        \draw (4,4) to[R, l=$R_3$, european, -*] ++(0,-4) coordinate(C) -- ++(-4,0);
+        \draw (A) -- ++(4,0) coordinate(D);
+        \draw (D) -- ++(4,0) to[R, european, l=$R_6$, -*] ++(0,-4) coordinate(E);
+        \draw (D) to[R, *-*, european, l=$R_5$] ++(0,-4) coordinate(F) to[R, european, -*, l=$R_2$] ++(0,-4) coordinate(H);
+        
+        \draw (4,4) to[short, -*] (5.5,4) ;
+        \draw (6.5,4) to[short, *-](F) -- (E);
+        \ctikzset{voltage=straight}
+        \draw (7,4) to[short, v=$U_p$] (5,4);
+        \draw[white] (5.6,4) to[short] (6.4,4);
+        \draw (C) -- ++(8,0) coordinate(G);
+        \draw (E) to[esource, l=$J_0$, name = I] (G);
+        \node at (I)[rotate=90]{> >};
+        \node at (H)[yshift = -3mm]{c};
+        \node at (F)[yshift = -3mm, xshift = 3mm]{b};
+        \node at (D)[yshift = 3mm]{a};
+        \node
+    \end{circuitikz}
+    \caption{Электрическая цепь}
+    \label{fig:dc_equ}
+\end{figure}
+
+Рассмотрим часть цепи между потенциалами $\varphi_b ~\text{и}~ \varphi_c $:
+$U_p = U_2 = I_2 \cdot R_2$
+
+По первому закону Кирхгофа $I_2 = J_0 - I_1$, где $I_1 = I = 46.17~\text{мА}$ из метода суперпозиции, тогда:
+\\
+$I_2 = J_0 - I_1 = 140 - 46.17 = 93.83 ~\text{мА}$
+\\
+$U_p = U_2 = I_2 \cdot R_2 = 93.83 \cdot 10^{-3}\cdot 250 = 23.46 ~B$
+\\
+В итоге, можно перерисовать схему с использованием эквивалентного источника напряжения и эквивалентного сопротивления:
+
+\begin{figure}[h]
+    \centering
+    \begin{circuitikz}
+        \draw (0,0) to[american current source, l=${E_\text{экв} = U_p}$] ++(0,4) to[R, l=${R_\text{экв} = R_\text{вх}}$, european] ++(4,0) to[R, l=$R_H$, european] ++(0,-4) -- (0,0);
+    \end{circuitikz}
+    \caption{Схема эквивалентного генератора}
+    \label{fig:enter-label}
+\end{figure}
+
+Рассчитаем $I_\text{кз}$ и $I_p$ по определению:
+\\
+$I_\text{кз} = \frac{U_p}{R_\text{вх}} = \frac{23.45}{362.2} = 64.74~\text{мА}$
+\\
+$I_H = \frac{U_p}{R_\text{вх} + R_H} = \frac{23.45}{362.2 + 235} = 39.27~\text{мА}$
+\\
+\\
+Ответ: $$U_p = 23.45~B, R_\text{вх} = 362.2~\text{Ом}, I_\text{кз} = 64.74~\text{мА}$$
+
+Сравнивая значения $I_H$, полученные методом узловых потенциалов и методом эквивалентного генератора, разница их значений совпадает на $\frac{I_H}{I_{H\varphi}} = \frac{39.27}{39.33} = 0.998$ или $99.8\%$, то есть погрешность в вычислениях составила менее $0.2\%$.
+
+\subsection{Составление уравнения баланса мощности}
+
+Составим уравнение баланса активных мощностей.
+
+Общая формула:
+\\
+$\displaystyle\sum P_\text{ист} = \displaystyle\sum P_\text{пр}$ \\ $P_\text{пр} = I^2R;\\P_\text{ист} = UI \\ \displaystyle\sum I\cdot E = \displaystyle\sum I^2 \cdot R$ 
+\\
+$- E_0 \cdot I_1 + (\varphi_2 - \varphi_0) \cdot J = I_1^2R_1 + I_2^2R_2 + I_3^2(R_3+R_H) + I_5^2R_5 + I_6^2R_6$
+\\
+$-10.3 \cdot 27.73\cdot 10^{-3} + 18.21 \cdot 140 \cdot 10^{-3} = (27.73 \cdot 10^{-3})^2 \cdot 179 + (72.84\cdot 10^{-3})^2 \cdot 250 + (39.33 \cdot 10^{-3})^2 \cdot (229+235) + (13.92\cdot 10^{-3})^2 \cdot 212 + (13.92\cdot 10^{-3})^2 \cdot 212$\\
+$$2.263 ~\text{Вт} = 2.264~\text{Вт}$$
+
+Рассчитаем погрешность вычислений:
+\\
+$\delta = \frac{|P_\text{ист} - P_\text{пр}|}{P_\text{ист}} \cdot 100\% = \frac{|2.263 - 2.264|}{2.263} \cdot 100\% = 0.038\% < 1\% \implies$ вычисления сошлись, значения верны. 
+
+Так как все вычисления были проделаны два раза, двумя разными методами, а также проверены уравнением баланса мощности, и в итоге различие значений составило менее $1\%$, то можно с уверенностью сказать, что ответы верны.
+
+
+
+
+
+
+
+

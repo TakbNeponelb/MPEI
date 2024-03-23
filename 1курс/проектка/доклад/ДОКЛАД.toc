@@ -1,0 +1,11 @@
+\babel@toc {russian}{}\relax 
+\contentsline {section}{\numberline {1}Введение}{1}{section.1}%
+\contentsline {section}{\numberline {2}История изучения биоритмов}{1}{section.2}%
+\contentsline {section}{\numberline {3}Типы биоритмов}{3}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Физический биоритм}{3}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Эмоциональный биоритм}{3}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Интеллектуальный биоритм}{3}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Влияние биоритмов на жизнь человека}{4}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Научные исследования}{5}{section.4}%
+\contentsline {section}{\numberline {5}Популярность биоритмов в современном мире}{6}{section.5}%
+\contentsline {section}{\numberline {6}Вывод}{6}{section.6}%

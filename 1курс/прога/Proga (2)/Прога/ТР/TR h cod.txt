@@ -1,0 +1,234 @@
+#include "Header.h"
+
+void deleteAll(ListMass &a) {
+	while (!IsEmpty(a))
+	{
+		DltNac(a);
+	}
+}
+
+void deleteAll(ListFILE &a, int argc, char* argv[]) {
+	while (!IsEmpty(a))
+	{
+		DltNac(a, argc, argv);
+	}
+}
+
+void PushTXT(ListFILE &a, int argc, char* argv[]) {
+	int ch;
+	FILE *txt;
+	TInfo buff;
+	int i=1;
+	fopen_s(&txt, argv[2], "rt");
+	if (IsEmpty(a)) {
+		fscanf_s(txt, "%s", &buff.LastName);
+		fscanf_s(txt, "%s", &buff.FirstName);
+		fscanf_s(txt, "%d", &buff.YearOfBirth);
+		fscanf_s(txt, "%d", &buff.Weight);
+		a = CreateList(buff, argc, argv);
+		while (!feof(txt)) { 
+			fscanf_s(txt, "%s", &buff.LastName);
+			fscanf_s(txt, "%s", &buff.FirstName);
+			fscanf_s(txt, "%d", &buff.YearOfBirth);
+			fscanf_s(txt, "%d", &buff.Weight);
+			PopBack(a, buff, argc, argv);
+		}
+		return;
+	}
+	printf_s("В начало - 1\nВ середину - 2\nВ конец - 3");
+	scanf_s("%c", ch);
+	switch (ch)
+	{
+	case 1:
+		fscanf_s(txt, "%s", &buff.LastName);
+		fscanf_s(txt, "%s", &buff.FirstName);
+		fscanf_s(txt, "%d", &buff.YearOfBirth);
+		fscanf_s(txt, "%d", &buff.Weight);
+		PushBack(a, buff, argc, argv);
+		while (!feof(txt)) {
+			fscanf_s(txt, "%s", &buff.LastName);
+			fscanf_s(txt, "%s", &buff.FirstName);
+			fscanf_s(txt, "%d", &buff.YearOfBirth);
+			fscanf_s(txt, "%d", &buff.Weight);
+			MedBack(a, buff, argc, argv, i++);
+		}break;
+	
+	case 2:
+		printf_s("Введите номер, после которого добавить:");
+		scanf_s("%d", &i);
+		while (!feof(txt)) {
+			fscanf_s(txt, "%s", &buff.LastName);
+			fscanf_s(txt, "%s", &buff.FirstName);
+			fscanf_s(txt, "%d", &buff.YearOfBirth);
+			fscanf_s(txt, "%d", &buff.Weight);
+			MedBack(a, buff, argc, argv, i++);
+		}break;
+	case 3:
+		while (!feof(txt)) {
+			fscanf_s(txt, "%s", &buff.LastName);
+			fscanf_s(txt, "%s", &buff.FirstName);
+			fscanf_s(txt, "%d", &buff.YearOfBirth);
+			fscanf_s(txt, "%d", &buff.Weight);
+			PopBack(a, buff, argc, argv);
+		}break;
+	default:printf_s("Неправильная команда!");
+		break;
+	}
+}
+
+void PushTXT(ListMass &a, int argc, char* argv[]) {
+	int ch;
+	FILE *txt;
+	TInfo buff;
+	int i = 1;
+	fopen_s(&txt, argv[2], "rt");
+	if (IsEmpty(a)) {
+		fscanf_s(txt, "%s", &buff.LastName);
+		fscanf_s(txt, "%s", &buff.FirstName);
+		fscanf_s(txt, "%d", &buff.YearOfBirth);
+		fscanf_s(txt, "%d", &buff.Weight);		a = CreateList(buff);
+		while (!feof(txt)) {
+			fscanf_s(txt, "%s", &buff.LastName);
+			fscanf_s(txt, "%s", &buff.FirstName);
+			fscanf_s(txt, "%d", &buff.YearOfBirth);
+			fscanf_s(txt, "%d", &buff.Weight);			PopBack(a, buff);
+		}
+		return;
+	}
+	printf_s("В начало - 1\nВ середину - 2\nВ конец - 3");
+	scanf_s("%c", ch);
+	switch (ch)
+	{
+	case 1:
+		fscanf_s(txt, "%s", &buff.LastName);
+		fscanf_s(txt, "%s", &buff.FirstName);
+		fscanf_s(txt, "%d", &buff.YearOfBirth);
+		fscanf_s(txt, "%d", &buff.Weight);		PushBack(a, buff);
+		while (!feof(txt)) {
+			fscanf_s(txt, "%s", &buff.LastName);
+			fscanf_s(txt, "%s", &buff.FirstName);
+			fscanf_s(txt, "%d", &buff.YearOfBirth);
+			fscanf_s(txt, "%d", &buff.Weight);			MedBack(a, buff, i++);
+		}break;
+
+	case 2:
+		printf_s("Введите номер, после которого добавить:");
+		scanf_s("%d", &i);
+		while (!feof(txt)) {
+			fscanf_s(txt, "%s", &buff.LastName);
+			fscanf_s(txt, "%s", &buff.FirstName);
+			fscanf_s(txt, "%d", &buff.YearOfBirth);
+			fscanf_s(txt, "%d", &buff.Weight);
+			MedBack(a, buff, i++);
+		}break;
+	case 3:
+		while (!feof(txt)) {
+			fscanf_s(txt, "%s", &buff.LastName);
+			fscanf_s(txt, "%s", &buff.FirstName);
+			fscanf_s(txt, "%d", &buff.YearOfBirth);
+			fscanf_s(txt, "%d", &buff.Weight);
+			PopBack(a, buff);
+		}break;
+	default:printf_s("Неправильная команда!");
+		break;
+	}
+}
+
+void PushConsole(ListFILE &a, int argc, char* argv[]) {
+	int ch;
+	TInfo buff;
+	int i = 1;
+	if (IsEmpty(a)) {
+		scanf_s("%s", &buff.LastName);
+		scanf_s("%s", &buff.FirstName);
+		scanf_s("%d", &buff.YearOfBirth);
+		scanf_s("%d", &buff.Weight);
+		a = CreateList(buff, argc, argv);
+	}
+	printf_s("В начало - 1\nВ середину - 2\nВ конец - 3");
+	scanf_s("%c", ch);
+	switch (ch)
+	{
+	case 1:
+		scanf_s("%s", &buff.LastName);
+		scanf_s("%s", &buff.FirstName);
+		scanf_s("%d", &buff.YearOfBirth);
+		scanf_s("%d", &buff.Weight);
+		PushBack(a, buff, argc, argv);
+		break;
+
+	case 2:
+		printf_s("Введите номер, после которого добавить:");
+		scanf_s("%d", &i);
+		scanf_s("%s", &buff.LastName);
+		scanf_s("%s", &buff.FirstName);
+		scanf_s("%d", &buff.YearOfBirth);
+		scanf_s("%d", &buff.Weight);
+		MedBack(a, buff, argc, argv, i);
+		break;
+	case 3:
+		scanf_s("%s", &buff.LastName);
+		scanf_s("%s", &buff.FirstName);
+		scanf_s("%d", &buff.YearOfBirth);
+		scanf_s("%d", &buff.Weight);
+		PopBack(a, buff, argc, argv);
+		break;
+	default:printf_s("Неправильная команда!");
+		break;
+	}
+}
+
+void PushConsole(ListMass &a) {
+	int ch;
+	TInfo buff;
+	int i = 1;
+	if (IsEmpty(a)) {
+		scanf_s("%s", &buff.LastName);
+		scanf_s("%s", &buff.FirstName);
+		scanf_s("%d", &buff.YearOfBirth);
+		scanf_s("%d", &buff.Weight);
+		a = CreateList(buff);
+	}
+	printf_s("В начало - 1\nВ середину - 2\nВ конец - 3");
+	scanf_s("%c", ch);
+	switch (ch)
+	{
+	case 1:
+		scanf_s("%s", &buff.LastName);
+		scanf_s("%s", &buff.FirstName);
+		scanf_s("%d", &buff.YearOfBirth);
+		scanf_s("%d", &buff.Weight);
+		PushBack(a, buff);
+		break;
+
+	case 2:
+		printf_s("Введите номер, после которого добавить:");
+		scanf_s("%d", &i);
+		scanf_s("%s", &buff.LastName);
+		scanf_s("%s", &buff.FirstName);
+		scanf_s("%d", &buff.YearOfBirth);
+		scanf_s("%d", &buff.Weight);
+		MedBack(a, buff, i);
+		break;
+	case 3:
+		scanf_s("%s", &buff.LastName);
+		scanf_s("%s", &buff.FirstName);
+		scanf_s("%d", &buff.YearOfBirth);
+		scanf_s("%d", &buff.Weight);
+		PopBack(a, buff);
+		break;
+	default:printf_s("Неправильная команда!");
+		break;
+	}
+}
+
+void DltN(ListMass &a) {
+	int n, ch;
+	scanf_s("%d", &n);
+	printf_s("Из начала - 1\nИз середины - 2\Из конца - 3");
+	switch (ch) {
+		case 1:for (int i = 0; i < n; i++) DltNac(a); break;
+		case 2:for (int i = 0; i < n; i++) printf_s("Введите номер, после которого удалять:"); scanf_s("%d", ch); DltMed(a, ch); break;
+	}
+}
+

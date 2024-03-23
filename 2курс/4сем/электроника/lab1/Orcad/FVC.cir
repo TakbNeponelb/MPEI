@@ -1,0 +1,21 @@
+* C:\Users\zelle\Desktop\МЭИ\2курс\4сем\электроника\lab1\Orcad\FVC.sch
+
+* Schematics Version 9.2
+* Tue Feb 27 02:03:27 2024
+
+
+
+** Analysis setup **
+.ac LIN 10000 10 220.00K
+
+
+* From [PSPICE NETLIST] section of C:\Program Files\Orcad\PSpice\PSpice.ini:
+.lib "nom.lib"
+
+.INC "FVC.net"
+
+
+.PROBE V(*) I(*) W(*) D(*) NOISE(*) 
+
+
+.END

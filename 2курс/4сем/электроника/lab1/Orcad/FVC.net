@@ -1,0 +1,7 @@
+* Schematics Netlist *
+
+
+
+V_V1         $N_0001 0 DC 0V AC 1V 
+C_C2         $N_0001 $N_0002  15n  
+R_R2         0 $N_0002  20k  

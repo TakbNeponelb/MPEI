@@ -1,0 +1,29 @@
+unit modul;
+interface
+  type 
+  arra=array of double;
+  Procedure FillArray(var x:arra; const size:integer);
+  function formula (x:arra; a, b, size:integer):double;
+implementation
+  Procedure FillArray(var x:arra; const size:integer);
+  var i:integer;
+  begin
+    for i:=0 to size-1 do
+    read(x[i]);
+  end;
+  function formula (x:arra; a, b, size:integer):double;
+  var i, j: integer ;
+  begin
+    if (b<a) and (a<0) and (b>=size) then
+    writeln('Error! Incorrect [a,b]!')
+    else begin
+      if b=a then
+        formula:=(x[a] - (x[a]*x[a])/(2+a))
+      else begin
+        i:=(b+a) div 2;
+        j:=i+1;
+        formula:=formula(x, a, i, size)*formula(x, j, b, size);
+      end;
+    end;
+  end;
+end.

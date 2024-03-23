@@ -1,0 +1,183 @@
+#include <iostream>
+#include <string>
+#include <windows.h>
+#include <vector>
+
+using namespace std;
+
+struct FIOZarplata {
+	string FirstName, Name, SecondName;
+	double zarplata;
+};
+
+class sotrudnik {
+protected:
+	string FirstName, Name, SecondName;
+	double zarplata;
+public:
+	/*sotrudnik()
+	{
+		
+	}*/
+	sotrudnik(string FirstName, string Name, string SecondName, double zarplata=0)
+	{
+		this->FirstName = FirstName;
+		this->Name = Name;
+		this->SecondName = SecondName;
+		this->zarplata = zarplata;
+	}
+	void SetFIO(string FirstName, string Name, string SecondName) {
+		this->FirstName = FirstName;
+		this->Name = Name;
+		this->SecondName = SecondName;
+		this->zarplata = zarplata;
+	}
+	void GetFIO(string &FirstName, string &Name, string &SecondName) {
+		FirstName = this->FirstName;
+		Name = this->Name;
+		SecondName = this->SecondName;
+	}
+	void SetZarplata(double zarplata) {this->zarplata = zarplata;}
+	double GetZarplata() {return zarplata;}
+};
+
+
+
+class voditel :public sotrudnik {
+private:
+	vector<string> prava;
+	vector<string> mashini;
+public:
+	voditel(vector<string> prava, vector<string> mashini, string FirstName, string Name, string SecondName, double zarplata = 0) :sotrudnik(FirstName, Name, SecondName, zarplata)
+	{
+		this->prava = prava;
+		this->mashini = mashini;
+	}
+	vector<string> GetPrava() {return prava;}
+	vector<string> GetMashini() {return mashini;}
+	void SetPrava(vector<string> prava) {this->prava = prava;}
+	void SetMashini(vector<string> mashini) {this->mashini = mashini;}
+};
+
+class programmist :public sotrudnik {
+private:
+	vector<string> technology;
+	string level;
+public:
+	programmist(string level, vector<string> technology, string FirstName, string Name, string SecondName, double zarplata = 0) :sotrudnik(FirstName, Name, SecondName, zarplata)
+	{
+		this->level = level;
+		this->technology = technology;
+	}
+	string GetLevel() {return level;};
+	vector<string> GetTechnology() { return technology; }
+	void SetLevel(string level) { this->level = level; }
+	void SetTechnology(vector<string> technology) { this->technology = technology; }
+};
+
+class director;
+
+class secretar :public sotrudnik {
+public:
+	secretar(string FirstName, string Name, string SecondName, double zarplata = 0) :sotrudnik(FirstName, Name, SecondName, zarplata)
+	{
+
+	}
+	void VivodInTable(director boss);
+};
+
+class director :public sotrudnik {
+public:
+	director(string FirstName, string Name, string SecondName, double zarplata = 0) :sotrudnik(FirstName, Name, SecondName, zarplata)
+	{
+		Table.reserve(3);
+	}
+	vector<vector<FIOZarplata>> Table;
+
+	void Nanyt(programmist* i) {
+		FIOZarplata buff;
+		i->GetFIO(buff.FirstName, buff.Name, buff.SecondName);
+		buff.zarplata = i->GetZarplata();
+		Table[2].push_back(buff);
+	}
+	void Nanyt(voditel* i) {
+		FIOZarplata buff;
+		i->GetFIO(buff.FirstName, buff.Name, buff.SecondName);
+		buff.zarplata = i->GetZarplata();
+		Table[1].push_back(buff);
+	}
+	void Nanyt(secretar i) {
+		FIOZarplata buff;
+		i.GetFIO(buff.FirstName, buff.Name, buff.SecondName);
+		buff.zarplata = i.GetZarplata();
+		Table[0].push_back(buff);
+	}
+	void Uvolit(programmist j) {
+		FIOZarplata buff;
+		j.GetFIO(buff.FirstName, buff.Name, buff.SecondName);
+		buff.zarplata = j.GetZarplata();
+		int i = 0;
+		while ((Table[2][i].FirstName != buff.FirstName) || (Table[2][i].Name != buff.Name) || (Table[2][i].SecondName != buff.SecondName))
+		{
+			if (i >= Table[2].size())
+				return;
+			i++;
+		}
+		Table[2].erase(Table[2].begin() + i);
+	}
+	void Uvolit(voditel j) {
+		FIOZarplata buff;
+		j.GetFIO(buff.FirstName, buff.Name, buff.SecondName);
+		buff.zarplata = j.GetZarplata();
+		int i = 0;
+		while ((Table[1][i].FirstName != buff.FirstName) || (Table[1][i].Name != buff.Name) || (Table[1][i].SecondName != buff.SecondName))
+		{
+			if (i >= Table[1].size())
+				return;
+			i++;
+		}
+		Table[1].erase(Table[1].begin() + i);
+	}
+	void Uvolit(secretar j) {
+		FIOZarplata buff;
+		j.GetFIO(buff.FirstName, buff.Name, buff.SecondName);
+		buff.zarplata = j.GetZarplata();
+		int i = 0;
+		while ((Table[0][i].FirstName != buff.FirstName) || (Table[0][i].Name != buff.Name) || (Table[0][i].SecondName != buff.SecondName))
+		{
+			if (i >= Table[0].size())
+				return;
+			i++;
+		}
+		Table[0].erase(Table[0].begin() + i);
+	}
+	/*void* nanyt() {
+		return new secretar("","","");
+	}
+	secretar Nanyt(string FirstName, string Name, string SecondName, double zarplata) {
+		return secretar a(FirstName, Name, SecondName, zarplata);
+	}*/
+};
+
+
+int main(int argc, char* argv) {
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+	system("pause");
+}
+
+void secretar::VivodInTable(director boss) {
+	for (int i = 0; i < boss.Table.size(); i++)
+	{
+		switch (i)
+		{
+		case 0:cout << "Секретари:" << endl; break;
+		case 1:cout << "Водители:" << endl; break;
+		case 2:cout << "Программисты:" << endl; break;
+		}
+		for (int j = 0; j < boss.Table[i].size(); j++)
+		{
+			cout << boss.Table[i][j].FirstName << " " << boss.Table[i][j].Name << " " << boss.Table[i][j].SecondName << " " << boss.Table[i][j].zarplata << endl;
+		}
+	}
+}

@@ -1,0 +1,21 @@
+CREATE TABLE [dbo].[tableForLab6]
+(
+	[Id] INT NOT NULL PRIMARY KEY identity(1,1),
+	[NumberOfLand] int not null,
+	[Area] int not null,
+	[F] nvarchar(50) not null,
+	[I] nvarchar(50) not null,
+	[O] nvarchar(50) not null,
+	[PurchaseDate] date not null,
+	[Price] int not null,
+	[Donation] int not null,
+	[Electricity] nvarchar(5) not null,
+	[Benefits] nvarchar not null
+);
+go
+
+insert into dbo.tableForLab6 (NumberOfLand, Area, F, I, O, PurchaseDate, Price, Donation, Electricity, Benefits)
+values	(1, 111, "F1","I1","O1", "2000-09-27", 11111, 11, "Есть", "Есть"),
+		(2, 222, "F2","I2","O2", "2001-09-27", 22222, 22, "Есть", "Есть"),
+		(3, 333, "F3","I3","O3", "2002-09-27", 33333, 33, "Есть", "Есть");
+go

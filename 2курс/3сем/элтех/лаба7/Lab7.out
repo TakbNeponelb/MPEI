@@ -1,0 +1,79 @@
+
+**** 12/11/23 21:35:31 ********* PSpice 9.2 (Mar 2000) ******** ID# 1 ********
+
+ * C:\Users\zelle\Desktop\\2\3\\7\Lab7.sch
+
+
+ ****     CIRCUIT DESCRIPTION
+
+
+******************************************************************************
+
+
+
+
+* Schematics Version 9.2
+* Mon Dec 11 21:35:27 2023
+
+
+
+** Analysis setup **
+.tran 20ns 50us
+
+
+* From [PSPICE NETLIST] section of C:\Program Files\Orcad\PSpice\PSpice.ini:
+.lib "nom.lib"
+
+.INC "Lab7.net"
+
+
+
+**** INCLUDING Lab7.net ****
+* Schematics Netlist *
+
+
+
+V_V1         $N_0001 0  
++PULSE 0 1 0 0 0 20u 40u
+R_R1         $N_0002 $N_0001  1.1k  
+C_C1         0 $N_0002  5.6n  
+
+**** RESUMING Lab7.cir ****
+.PROBE V(*) I(*) W(*) D(*) NOISE(*) 
+
+
+.END
+
+**** 12/11/23 21:35:31 ********* PSpice 9.2 (Mar 2000) ******** ID# 1 ********
+
+ * C:\Users\zelle\Desktop\\2\3\\7\Lab7.sch
+
+
+ ****     INITIAL TRANSIENT SOLUTION       TEMPERATURE =   27.000 DEG C
+
+
+******************************************************************************
+
+
+
+ NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE
+
+
+($N_0001)    0.0000                   ($N_0002)    0.0000                   
+
+
+
+
+    VOLTAGE SOURCE CURRENTS
+    NAME         CURRENT
+
+    V_V1         0.000E+00
+
+    TOTAL POWER DISSIPATION   0.00E+00  WATTS
+
+
+
+          JOB CONCLUDED
+
+          TOTAL JOB TIME             .02
+

@@ -1,0 +1,60 @@
+#include <stdio.h> 
+#include <cmath>
+#include <ctime>
+//#include <locale.h>
+
+using namespace std;
+
+double formula(double x)
+{
+	return ((8.0 / 3.0)*(pow(1 + x, 3.0 / 2.0) - 1) - 4 * x);
+}
+
+double rt(double e, double x, double &temp, int &i)
+{
+	double buff = 0, TEMP = formula(x); i = 0; temp = 0;
+	buff = pow(x, 2);
+	while (abs(temp-TEMP) >= e)
+	{
+		temp += buff;
+		buff *= -((2 * i + 1.0) / (2 * i + 6.0))*x;
+		i++;
+	}
+	return temp;
+}
+
+int main()
+{
+	//setlocale(LC_ALL, "RUS");
+	srand(time(NULL));
+	double temp, e;
+	int size, j, z;
+	printf_s("Enter number of X\t");
+	scanf_s("%d",&size);
+	printf_s("Enter e\t\t\t");
+	scanf_s("%lf", &e);
+	if ((e >= 0.1) || (e <= 0)) {
+		printf_s("Error! Incorrect e");
+		e = (rand() % 99 + 1.0) / 100.0;
+		return 0;
+	}
+	printf_s("\n");
+	z=abs(log10(e)-1);
+	double *array = new double[size];
+	for (int i = 0; i < size; i++)
+	{
+		scanf_s("%lf",&array[i]);
+		if (array[i] >= 1) { printf_s("Error! Incorrect X\n"); array[i] = ((((rand() % 99) + 1.0) / 50) - 1); }
+	}
+	printf_s("_______________________________________________________________\n");
+	for (int i = 0; i < size; i++)
+	{
+		rt(e, array[i], temp, j);
+		printf_s("|%3d|%1.*lf|%1.*lf|%3d|%1.*lf|%1.*lf|\n", i + 1, z, array[i], z, temp, j, z, formula(array[i]), z, abs(rt(e, array[i], temp, j) - formula(array[i])));
+		printf_s("_______________________________________________________________\n");
+	}
+
+	delete[] array;
+	system("pause");
+	return 0;
+}

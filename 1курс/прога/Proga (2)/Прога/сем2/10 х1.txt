@@ -1,0 +1,19 @@
+#pragma once
+#include <stdio.h>
+#include <locale.h>
+#include <conio.h>
+#include <cmath>
+
+
+
+struct TElem {
+	double TInfo;
+	TElem *next;
+};
+typedef TElem* PElem;
+bool check(TElem *a);
+TElem *create(int info);
+void pushback(TElem *&a, int info);
+int GetInfo(TElem a);
+void Dlt1(TElem *&a);
+void TopToTop(TElem *&a, TElem *&b);

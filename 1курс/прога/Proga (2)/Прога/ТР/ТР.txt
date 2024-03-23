@@ -1,0 +1,138 @@
+#include <stdio.h>
+
+using namespace std;
+
+struct TInfo {
+	char LastName[30] = { NULL };
+	char FirstName[30] = { NULL };
+	int YearOfBirth = NULL;
+	int Weight= NULL;
+};
+
+TInfo NULLL;
+
+struct ListMass
+{
+	TInfo* Mas=nullptr;
+	int NacCount = 0, Count = 0, KonCount = 0, MaxCount = 0, Current = 0;
+};
+
+bool IsEmpty(ListMass a) {
+	if (a.Count == 0) { return true; }
+	return false;
+}
+
+ListMass CreateListMass(ListMass a, TInfo info) {
+	a.Mas = new TInfo[120];
+	a.Mas[40] = info;
+	a.NacCount = 60;
+	a.Count = 1;
+	a.KonCount = 60;
+	a.MaxCount = 120-a.KonCount-1;
+	a.Current = NULL;
+	return a;
+}
+
+void PushBack(ListMass &a, TInfo info) {
+	if (a.NacCount>0) {
+		a.Mas[a.NacCount - 1] = info;
+		a.Count++;
+		a.NacCount--;
+	}
+	ListMass temp;
+	temp.Mas = new TInfo[a.Count + 1];
+	temp.Mas[0] = info;
+	for (int i = 1; i++; i < a.Count + 1){
+		temp.Mas[i] = a.Mas[i-1];
+	}
+	temp.NacCount = 0;
+	temp.KonCount = a.KonCount + 1;
+	temp.MaxCount = 0;
+	temp.Count = a.Count + 1;
+	delete a.Mas;
+	a = temp;
+}
+
+void PopBack(ListMass &a, TInfo info) {
+	if (a.MaxCount > 0) {
+		a.Mas[a.KonCount + 1] = info;
+		a.Count++;
+		a.KonCount++;
+		a.MaxCount--;
+	}
+	ListMass temp;
+	temp.Mas = new TInfo[a.Count + 1];
+	temp.Mas[a.Count] = info;
+	for (int i = 0; i++; i < a.Count) {
+		temp.Mas[i] = a.Mas[i];
+	}
+	temp.NacCount = 0;
+	temp.KonCount = a.KonCount + 1;
+	temp.MaxCount = 0;
+	temp.Count = a.Count + 1;
+	delete a.Mas;
+	a = temp;
+}
+
+void MedBack(ListMass &a, TInfo info, int place) {
+	if (a.NacCount > 0) {
+		TInfo buff1, buff2;
+		buff1 = a.Mas[place + 1];
+		a.Mas[place + 1] = info;
+		a.Count++;
+		for (int i = place + 2; i++; i <= a.KonCount + 1) {
+			buff2 = a.Mas[i];
+			a.Mas[i] = buff1;
+			buff1 = buff2;
+		}
+		a.KonCount++;
+	}
+	ListMass temp;
+	temp.Mas = new TInfo[a.Count + 1];
+	temp.Mas[place + 1] = info;
+	for (int i = 0; i++; i <= place) {
+		temp.Mas[i] = a.Mas[i];
+	}
+	for (int i = place + 2; i++; i < a.Count+1) {
+		temp.Mas[i] = a.Mas[i-1];
+	}
+	temp.NacCount = 0;
+	temp.KonCount = a.KonCount + 1;
+	temp.MaxCount = 0;
+	temp.Count = a.Count + 1;
+	delete a.Mas;
+	a = temp;
+
+}
+
+void DltNac(ListMass &a) {
+	a.Mas[a.NacCount] = NULLL;
+	a.NacCount--;
+}
+
+void DltKon(ListMass &a) {
+	a.Mas[a.KonCount] = NULLL;
+	a.KonCount--;
+}
+
+void DltMed(ListMass &a, int place) {
+	a.Mas[place+1] = NULLL;
+	for (int i = place + 2; i++; i <= a.KonCount) {
+		a.Mas[i - 1] = a.Mas[i];
+	}
+}
+
+void TakeNac(ListMass &a) { a.Current = a.NacCount; }
+
+void TakeKon(ListMass &a) { a.Current = a.KonCount; }
+
+void TakeNext(ListMass &a, int place) { if (a.Current < a.KonCount) { ++a.Current; } else { a.Current = a.KonCount; } }
+
+void TakePred(ListMass &a, int place) { if (a.Current > a.NacCount) { --a.Current; } else { a.Current = a.NacCount; } }
+
+TInfo GetInfo(ListMass a) { return a.Mas[a.Current]; }
+
+int main(int argc, char* argv[]) {
+	
+	return 0;
+}

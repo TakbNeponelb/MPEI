@@ -1,0 +1,18 @@
+#pragma once
+#ifdef file //argv[1] - файл для списка, argv[2] - текстовый файл для считывания, argv[3] - текстовый лог-файл.
+#include "FILE.h"
+#else
+#include "Mass.h"
+#endif // file
+
+void DeleteAll(List &a);
+void AddTXT(List &a, int argc, char* argv[]);
+void AddConsole(List &a, int argc, char* argv[]);
+void DeleteN(List &a);
+void FirstElement(List &a);
+bool NextElement(List &a);
+bool PreviousElement(List &a);
+void LastElement(List &a);
+void RunTo(List &a);
+void DeleteThis(List &a, int argc, char* argv[]);
+void CleanLogFile(int argc, char* argv[]);

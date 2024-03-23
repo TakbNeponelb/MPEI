@@ -1,0 +1,27 @@
+#pragma once
+#include "DopHeader.h"
+#ifndef file
+
+struct List {
+	struct TInfo *Mass;
+	int dop1 = 0;
+	int n = 0;
+	int dop2 = 0;
+};
+
+bool IsNotEmpty(List a);
+void FirstElem(List &a);
+bool NextElem(List &a);
+bool PreviousElem(List &a);
+void LastElem(List &a);
+void LogFile(List a, int argc, char* argv[]);
+void CreateList(List &a, TInfo info, int argc, char* argv[]);
+void PushBack(List &a, TInfo info, int argc, char* argv[]);
+void PopBack(List &a, TInfo info);
+void MedBack(List &a, TInfo info);
+void DeleteFirst(List &a);
+void DeleteLast(List &a);
+void DeleteMedium(List &a);
+TInfo getTInfo(List a);
+
+#endif // file

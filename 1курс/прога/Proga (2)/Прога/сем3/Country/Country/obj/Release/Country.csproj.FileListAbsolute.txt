@@ -1,0 +1,17 @@
+C:\Users\SF\source\repos\Country\Country\bin\Release\Country.exe.config
+C:\Users\SF\source\repos\Country\Country\bin\Release\Country.exe
+C:\Users\SF\source\repos\Country\Country\bin\Release\Country.pdb
+C:\Users\SF\source\repos\Country\Country\obj\Release\IndividualWork.Form1.resources
+C:\Users\SF\source\repos\Country\Country\obj\Release\Country.Properties.Resources.resources
+C:\Users\SF\source\repos\Country\Country\obj\Release\Country.csproj.GenerateResource.cache
+C:\Users\SF\source\repos\Country\Country\obj\Release\Country.exe
+C:\Users\SF\source\repos\Country\Country\obj\Release\Country.pdb
+D:\SAUTOV'S PRIDE\Рабочий стол\Ice Phoenix\Учеба\Прога\сем3\Country\Country\bin\Release\Country.exe.config
+D:\SAUTOV'S PRIDE\Рабочий стол\Ice Phoenix\Учеба\Прога\сем3\Country\Country\bin\Release\Country.exe
+D:\SAUTOV'S PRIDE\Рабочий стол\Ice Phoenix\Учеба\Прога\сем3\Country\Country\bin\Release\Country.pdb
+D:\SAUTOV'S PRIDE\Рабочий стол\Ice Phoenix\Учеба\Прога\сем3\Country\Country\obj\Release\Country.csprojAssemblyReference.cache
+D:\SAUTOV'S PRIDE\Рабочий стол\Ice Phoenix\Учеба\Прога\сем3\Country\Country\obj\Release\IndividualWork.Form1.resources
+D:\SAUTOV'S PRIDE\Рабочий стол\Ice Phoenix\Учеба\Прога\сем3\Country\Country\obj\Release\Country.Properties.Resources.resources
+D:\SAUTOV'S PRIDE\Рабочий стол\Ice Phoenix\Учеба\Прога\сем3\Country\Country\obj\Release\Country.csproj.GenerateResource.cache
+D:\SAUTOV'S PRIDE\Рабочий стол\Ice Phoenix\Учеба\Прога\сем3\Country\Country\obj\Release\Country.exe
+D:\SAUTOV'S PRIDE\Рабочий стол\Ice Phoenix\Учеба\Прога\сем3\Country\Country\obj\Release\Country.pdb

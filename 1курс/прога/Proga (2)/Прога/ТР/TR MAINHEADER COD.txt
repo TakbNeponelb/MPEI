@@ -1,0 +1,154 @@
+#include "MainHeader.h"
+
+void DeleteAll(List &a) {
+	FILE* log = fopen("Log.txt", "r+t"); fseek(log, 0, SEEK_END); fprintf(log, "Удалить все элементы из списка\n"); fclose(log);
+	while (IsNotEmpty(a)) {
+		DeleteFirst(a);
+	}
+}
+
+void AddTXT(List &a, int argc, char* argv[]) {
+	FILE* log = fopen("Log.txt", "r+t"); fseek(log, 0, SEEK_END); fprintf(log, "Добавить элементы с текстового файла ");
+	FILE* txt;
+	TInfo info;
+	int ch, i = 0;
+	txt = fopen(argv[2], "rt");
+	if (!IsNotEmpty(a)) {
+		FScanTInfo(info, txt);
+		CreateList(a, info, argc, argv);
+		while (!feof(txt)) {
+			FScanTInfo(info, txt);
+			PopBack(a, info);
+		}
+		fprintf(log, "в пустой список\n");
+		fclose(log);
+		return;
+	}
+	printf("1 - В начало\n2 - После текущего\n3 - В конец");
+	printf("\nВаш выбор: ");
+	scanf("%d", &ch);
+	switch (ch)
+	{
+	case 1:
+		fprintf(log, "в начало\n");
+		FScanTInfo(info, txt);
+		PushBack(a, info, argc, argv);
+		FirstElem(a);
+		while (!feof(txt)) {
+			FScanTInfo(info, txt);
+			MedBack(a, info);
+			NextElem(a);
+			i++;
+		}
+		for (int j = 0; j < i; j++) { PreviousElem(a); }
+		break;
+
+	case 2:
+		fprintf(log, "после текущего\n");
+		while (!feof(txt)) {
+			FScanTInfo(info, txt);
+			MedBack(a, info);
+			NextElem(a);
+			i++;
+		}
+		for (int j = 0; j < i; j++) {
+			PreviousElem(a);
+		}
+		break;
+	case 3:
+		fprintf(log, "в конец\n");
+		while (!feof(txt)) {
+			FScanTInfo(info, txt);
+			PopBack(a, info);
+			i++;
+		}break;
+	default:printf("Неправильная команда!"); fprintf(log, "Пользователь ввел некорректные данные\n");
+		break;
+	}
+	fclose(log);
+}
+
+void AddConsole(List &a, int argc, char* argv[]) {
+	FILE* log = fopen("Log.txt", "r+t"); fseek(log, 0, SEEK_END); fprintf(log, "Добавить элемент с консоли ");
+	int ch;
+	TInfo info;
+	int i = 1;
+	if (!IsNotEmpty(a)) {
+		ScanTInfo(info);
+		CreateList(a, info, argc, argv);
+		return;
+	}
+	printf("1 - В начало\n2 - После текущего\n3 - В конец");
+	printf("\nВаш выбор: ");
+	scanf("%d", &ch);
+	switch (ch)
+	{
+	case 1:
+		fprintf(log, "в начало\n");
+		ScanTInfo(info);
+		PushBack(a, info, argc, argv);
+		break;
+
+	case 2:
+		fprintf(log, "после текущего\n");
+		ScanTInfo(info);
+		MedBack(a, info);
+		break;
+	case 3:
+		fprintf(log, "в конец\n");
+		ScanTInfo(info);
+		PopBack(a, info);
+		break;
+	case 4:
+		for (int i = 0; i < 11; i++) { PushBack(a, getTInfo(a), argc, argv); }
+		break;
+	default:printf("Неправильная команда!"); fprintf(log, "Пользователь ввел некорректные данные\n");
+		break;
+	}
+	fclose(log);
+}
+
+void DeleteN(List &a) {
+	int ch, i = 0, n;
+	printf("Введите кол-во элементов для удаления: ");
+	scanf("%d", &n);
+	FILE* log = fopen("Log.txt", "r+t"); fseek(log, 0, SEEK_END); fprintf(log, "Удалить %d элементов ", n);
+	printf("1 - Из начала\n2 - После текущего\n3 - Из конца");
+	printf("\nВаш выбор: ");
+	scanf("%d", &ch);
+	switch (ch)
+	{
+	case 1: fprintf(log, "из начала\n"); while (IsNotEmpty(a) && (i < n)) { DeleteFirst(a); i++; } break;
+	case 2: fprintf(log, "после текущего\n"); while (IsNotEmpty(a) && (i < n)) { DeleteMedium(a); i++; } break;
+	case 3: fprintf(log, "из конца\n"); while (IsNotEmpty(a) && (i < n)) { DeleteLast(a); i++; } break;
+	default:printf("Неправильная команда!"); fprintf(log, "Пользователь ввел некорректные данные\n"); break;
+	}
+	fclose(log);
+}
+
+void FirstElement(List &a) { FirstElem(a); FILE* log = fopen("Log.txt", "r+t"); fseek(log, 0, SEEK_END); fprintf(log, "Перейти к первому элементу\n"); fclose(log); }
+bool NextElement(List &a) { return NextElem(a); FILE* log = fopen("Log.txt", "r+t"); fseek(log, 0, SEEK_END); fprintf(log, "Перейти к следующему элементу\n"); fclose(log); }
+bool PreviousElement(List &a) { return PreviousElem(a); FILE* log = fopen("Log.txt", "r+t"); fseek(log, 0, SEEK_END); fprintf(log, "Перейти к предыдущему элементу\n"); fclose(log); }
+void LastElement(List &a) { LastElem(a); FILE* log = fopen("Log.txt", "r+t"); fseek(log, 0, SEEK_END); fprintf(log, "Перейти к последнему элементу\n"); fclose(log); }
+
+void DeleteThis(List &a, int argc, char* argv[]) {
+	FILE* log = fopen("Log.txt", "r+t"); fseek(log, 0, SEEK_END); fprintf(log, "Фильтр, удаление и удвоение элементов списка по условию\n"); fclose(log);
+	FirstElement(a);
+	while (!Uslov(getTInfo(a)) && IsNotEmpty(a)) {
+		DeleteFirst(a);
+	}
+	if (Uslov(getTInfo(a)) && IsNotEmpty(a)) {
+		MedBack(a, getTInfo(a));
+		NextElement(a);
+	}
+	while (NextElement(a)) {
+		if (Uslov(getTInfo(a))) {
+			MedBack(a, getTInfo(a));
+			NextElement(a);
+		}
+		else if (getTInfo(a).Height > 0) {
+			PreviousElement(a);
+			DeleteMedium(a);
+		}
+	}
+}
